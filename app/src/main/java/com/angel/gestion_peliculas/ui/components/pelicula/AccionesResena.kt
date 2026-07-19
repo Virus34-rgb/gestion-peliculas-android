@@ -9,8 +9,10 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 
 @Composable
-fun AccionesResena(enabled: Boolean, onBorrar: () -> Unit,
-                   onActualizar: () -> Unit, modifier: Modifier = Modifier) {
+fun AccionesResena(
+    enabled: Boolean, onBorrar: () -> Unit,
+    onActualizar: () -> Unit, modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)

@@ -15,16 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AuthHeader(subtexto : String){
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)){
-        Icon(imageVector = Icons.Default.Movie, contentDescription = "Logo temporal", Modifier.size(56.dp),
-            MaterialTheme.colorScheme.primary)
-        //El padding lo pongo con Spacer o con el padding interno de los elementos?
-        Text(text = "Tu gestor de reseñas",
-            style = MaterialTheme.typography.headlineLarge)
-        Text(text = subtexto,
-            style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+fun AuthHeader(subtexto: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Movie,
+            contentDescription = "Logo temporal",
+            Modifier.size(56.dp),
+            MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = "Tu gestor de reseñas",
+            style = MaterialTheme.typography.headlineLarge
+        )
+        Text(
+            text = subtexto,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
 
     }
 }

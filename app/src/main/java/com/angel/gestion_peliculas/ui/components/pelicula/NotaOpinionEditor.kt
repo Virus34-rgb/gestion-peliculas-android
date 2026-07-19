@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NotaOpinionEditor(nota : Float, onNotaChange: (Float) -> Unit,opinion : String?,
-                      onOpinionChange : (String) -> Unit,enabled : Boolean){
-    Text(text ="Nota: ${"%.1f".format(nota)}",style = MaterialTheme.typography.titleMedium)
+fun NotaOpinionEditor(
+    nota: Float, onNotaChange: (Float) -> Unit, opinion: String?,
+    onOpinionChange: (String) -> Unit, enabled: Boolean
+) {
+    Text(text = "Nota: ${"%.1f".format(nota)}", style = MaterialTheme.typography.titleMedium)
     Slider(
         enabled = enabled,
         value = nota,

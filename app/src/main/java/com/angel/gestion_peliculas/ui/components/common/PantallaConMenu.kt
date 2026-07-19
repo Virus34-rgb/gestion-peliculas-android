@@ -45,20 +45,29 @@ fun PantallaConMenu(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {Text(text = titulo,
-                    style = MaterialTheme.typography.titleLarge)
-                        },
+                title = {
+                    Text(
+                        text = titulo,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
                 actions = {
                     IconButton(onClick = { menuAbierto = true }) {
                         Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Opciones")
                     }
-                    DropdownMenu(expanded = menuAbierto, onDismissRequest = { menuAbierto = false }) {
-                        DropdownMenuItem(text = { Text("Cerrar sesión") },
-                            onClick ={ menuAbierto = false;
+                    DropdownMenu(
+                        expanded = menuAbierto,
+                        onDismissRequest = { menuAbierto = false }) {
+                        DropdownMenuItem(
+                            text = { Text("Cerrar sesión") },
+                            onClick = {
+                                menuAbierto = false;
                                 scope.launch {
                                     TokenManager.logout(context);
                                     navController.navigate("login")
-                                    { popUpTo(navController.graph.id) { inclusive = true } } } })
+                                    { popUpTo(navController.graph.id) { inclusive = true } }
+                                }
+                            })
                     }
                 }
             )
@@ -66,24 +75,40 @@ fun PantallaConMenu(
         bottomBar = {
             if (mostrarBottomBar) {
                 NavigationBar {
-                    NavigationBarItem(selected = currentRoute == "lista",
-                        onClick = { navController.navigate("lista") {
-                            launchSingleTop = true
-                            restoreState = true
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                    NavigationBarItem(
+                        selected = currentRoute == "lista",
+                        onClick = {
+                            navController.navigate("lista") {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
                             }
-                        }},
-                        icon = { Icon(painterResource(R.drawable.list_add), contentDescription = "Lista") })
-                    NavigationBarItem(selected = currentRoute == "buscar",
-                        onClick = { navController.navigate("buscar"){
-                            launchSingleTop = true
-                            restoreState = true
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                        },
+                        icon = {
+                            Icon(
+                                painterResource(R.drawable.list_add),
+                                contentDescription = "Lista"
+                            )
+                        })
+                    NavigationBarItem(
+                        selected = currentRoute == "buscar",
+                        onClick = {
+                            navController.navigate("buscar") {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
                             }
-                        } },
-                        icon = { Icon(painterResource(R.drawable.search_item), contentDescription = "Buscar") } )
+                        },
+                        icon = {
+                            Icon(
+                                painterResource(R.drawable.search_item),
+                                contentDescription = "Buscar"
+                            )
+                        })
                 }
             }
         }

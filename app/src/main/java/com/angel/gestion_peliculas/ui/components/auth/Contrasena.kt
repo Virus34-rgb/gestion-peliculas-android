@@ -16,8 +16,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun Contrasena(pass: String, onValueChange: (String) -> Unit, label: String,
-               cargando: Boolean?){
+fun Contrasena(
+    pass: String, onValueChange: (String) -> Unit, label: String,
+    cargando: Boolean?
+) {
     var mostrarPass by remember { mutableStateOf(false) }
     OutlinedTextField(
         enabled = cargando != true,
@@ -33,7 +35,7 @@ fun Contrasena(pass: String, onValueChange: (String) -> Unit, label: String,
         },
         label = { Text(label) },
         visualTransformation =
-            if(mostrarPass) VisualTransformation.None
+            if (mostrarPass) VisualTransformation.None
             else PasswordVisualTransformation()
     )
 }

@@ -15,14 +15,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CargandoCirculo(cargando : Boolean?, esperaLarga : Boolean){
-    if(cargando == true){
-        Box( modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally){
+fun CargandoCirculo(cargando: Boolean?, esperaLarga: Boolean) {
+    if (cargando == true) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 CircularProgressIndicator()
                 Spacer(modifier = Modifier.height(8.dp))
-                if(esperaLarga){
+                if (esperaLarga) {
                     Text(
                         text = "El servidor puede tardar unos segundos en responder...",
                         style = MaterialTheme.typography.titleMedium,

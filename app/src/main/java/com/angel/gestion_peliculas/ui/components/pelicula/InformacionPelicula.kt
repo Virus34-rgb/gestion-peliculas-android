@@ -13,18 +13,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InformacionPelicula(generos: List<String>, fecha: String, contenidoExtra: @Composable () -> Unit){
-    Card(modifier = Modifier.fillMaxWidth().padding(8.dp)){
+fun InformacionPelicula(
+    generos: List<String>,
+    fecha: String,
+    contenidoExtra: @Composable () -> Unit
+) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
         Column(
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            Text(text = "Genero: ${generos.joinToString(", ")}",
+        ) {
+            Text(
+                text = "Genero: ${generos.joinToString(", ")}",
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold)
-            Text(text = "Fecha: ${fecha}",
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Fecha: ${fecha}",
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
             contenidoExtra()
         }
     }

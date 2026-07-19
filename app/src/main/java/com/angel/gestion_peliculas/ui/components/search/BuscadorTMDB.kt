@@ -18,9 +18,11 @@ import com.angel.gestion_peliculas.model.TMDBMovie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BuscadorTMDB(nombre: String, onNombreChange: (String) -> Unit, resultados: List<TMDBMovie>?,
-                 onPeliculaSeleccionada: (TMDBMovie) -> Unit, enabled: Boolean, isError: Boolean = false,
-                 mensajeError: String? = null){
+fun BuscadorTMDB(
+    nombre: String, onNombreChange: (String) -> Unit, resultados: List<TMDBMovie>?,
+    onPeliculaSeleccionada: (TMDBMovie) -> Unit, enabled: Boolean, isError: Boolean = false,
+    mensajeError: String? = null
+) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expanded && resultados?.isNotEmpty() == true && enabled,
@@ -30,7 +32,7 @@ fun BuscadorTMDB(nombre: String, onNombreChange: (String) -> Unit, resultados: L
             enabled = enabled,
             modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
             value = nombre,
-            onValueChange = { onNombreChange(it);expanded = true },
+            onValueChange = { onNombreChange(it); expanded = true },
             label = { Text("Nombre") },
             isError = isError,
             supportingText = {

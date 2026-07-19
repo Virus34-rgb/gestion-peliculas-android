@@ -17,23 +17,29 @@ import com.angel.gestion_peliculas.model.CountryProviders
 import com.angel.gestion_peliculas.model.Provider
 
 @Composable
-fun SeccionProveedores(providers: CountryProviders?){
+fun SeccionProveedores(providers: CountryProviders?) {
     if (providers == null) return
     ProveedoresCard("Disponible en:", providers!!.flatrate)
     ProveedoresCard("Alquilable en:", providers!!.rent)
     ProveedoresCard("Se puede comprar en:", providers!!.buy)
 }
+
 @Composable
-private fun ProveedoresCard(text : String, providers : List<Provider>?){
-    if(!providers.isNullOrEmpty()){
-        Text(text = text, style = MaterialTheme.typography.labelMedium,fontWeight = FontWeight.Bold)
+private fun ProveedoresCard(text: String, providers: List<Provider>?) {
+    if (!providers.isNullOrEmpty()) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold
+        )
         LazyRow() {
-            items(providers){
-                    provider ->
+            items(providers) { provider ->
                 ImagenPath(
                     provider.logoPath,
                     provider.providerName,
-                    Modifier.size(48.dp).clip(RoundedCornerShape(8.dp))
+                    Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(8.dp))
                 )
             }
         }

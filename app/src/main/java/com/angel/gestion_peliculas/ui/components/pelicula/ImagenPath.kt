@@ -9,7 +9,7 @@ import com.angel.gestion_peliculas.R
 
 @Composable
 
-fun ImagenPath(logoPath : String?,nombre : String,modifier : Modifier){
+fun ImagenPath(logoPath: String?, nombre: String, modifier: Modifier) {
     AsyncImage(
         model = if (logoPath.isNullOrEmpty()) null
         else "https://image.tmdb.org/t/p/w92${logoPath}",

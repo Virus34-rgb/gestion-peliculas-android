@@ -16,19 +16,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BotonOrden(texto : String, seleccionado : Boolean, ascendente : Boolean, onClick :() -> Unit){
+fun BotonOrden(texto: String, seleccionado: Boolean, ascendente: Boolean, onClick: () -> Unit) {
     TextButton(onClick = onClick) {
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp),verticalAlignment = Alignment.CenterVertically){
-            Text(text = texto, style = MaterialTheme.typography.bodyMedium
-                ,color = MaterialTheme.colorScheme.onSurfaceVariant)
-            if (seleccionado && ascendente){
-                Icon(imageVector = Icons.Default.ArrowUpward, contentDescription = "FlechaArriba", Modifier.size(16.dp),
-                    MaterialTheme.colorScheme.primary)
-            }
-            else if (seleccionado && !ascendente){
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = texto,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            if (seleccionado && ascendente) {
+                Icon(
+                    imageVector = Icons.Default.ArrowUpward,
+                    contentDescription = "FlechaArriba",
+                    Modifier.size(16.dp),
+                    MaterialTheme.colorScheme.primary
+                )
+            } else if (seleccionado && !ascendente) {
 
-                Icon(imageVector = Icons.Default.ArrowDownward, contentDescription = "FlechaAbajo", Modifier.size(16.dp),
-                    MaterialTheme.colorScheme.primary)
+                Icon(
+                    imageVector = Icons.Default.ArrowDownward,
+                    contentDescription = "FlechaAbajo",
+                    Modifier.size(16.dp),
+                    MaterialTheme.colorScheme.primary
+                )
             }
         }
     }

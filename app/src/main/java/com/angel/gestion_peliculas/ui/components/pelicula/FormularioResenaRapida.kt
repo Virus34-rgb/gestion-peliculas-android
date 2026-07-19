@@ -10,12 +10,8 @@ import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 
 @Composable
 fun FormularioResenaRapida(
-    nota: Float,
-    onNotaChange: (Float) -> Unit,
-    opinion: String?,
-    onOpinionChange: (String) -> Unit,
-    enabled: Boolean,
-    onGuardar: () -> Unit
+    nota: Float, onNotaChange: (Float) -> Unit, opinion: String?,
+    onOpinionChange: (String) -> Unit, enabled: Boolean, onGuardar: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -24,7 +20,9 @@ fun FormularioResenaRapida(
     ) {
         NotaOpinionEditor(nota, onNotaChange, opinion, onOpinionChange, enabled)
         BotonPrincipal(
-            "Añadir/Actualizar Reseña", enabled, Modifier.fillMaxWidth().padding(16.dp)
+            "Añadir/Actualizar Reseña", enabled, Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             onGuardar()
         }

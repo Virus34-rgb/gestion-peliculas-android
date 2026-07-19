@@ -15,14 +15,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EmptyState(icono : ImageVector,texto : String,modifier: Modifier = Modifier){
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp),horizontalAlignment = Alignment.CenterHorizontally){
-            Icon(imageVector = icono, contentDescription = null
-                , Modifier.size(32.dp),
-                MaterialTheme.colorScheme.primary)
-            Text(text = texto,style = MaterialTheme.typography.titleMedium
-                ,color = MaterialTheme.colorScheme.onSurfaceVariant)
+fun EmptyState(icono: ImageVector, texto: String, modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = icono, contentDescription = null, Modifier.size(32.dp),
+                MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = texto,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

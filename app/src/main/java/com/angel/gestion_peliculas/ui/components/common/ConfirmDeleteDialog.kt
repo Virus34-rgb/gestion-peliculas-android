@@ -9,20 +9,20 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ConfirmDeleteDialog(titulo: String, mensaje: String,
-                     onConfirmar: () -> Unit, onCancelar: () -> Unit){
+fun ConfirmDeleteDialog(
+    titulo: String, mensaje: String, onConfirmar: () -> Unit, onCancelar: () -> Unit
+) {
     AlertDialog(
         icon = {
-            Icon(Icons.Default.Info, contentDescription = "")
-        },
+        Icon(Icons.Default.Info, contentDescription = "")
+    },
         title = {
             Text(titulo)
         },
         text = {
             Text(mensaje)
         },
-        onDismissRequest = {  onCancelar() },
+        onDismissRequest = { onCancelar() },
         confirmButton = { TextButton(onClick = { onConfirmar() }) { Text("Confirmar") } },
-        dismissButton = {TextButton(onClick = { onCancelar() }) { Text("Cancelar") } }
-    )
+        dismissButton = { TextButton(onClick = { onCancelar() }) { Text("Cancelar") } })
 }

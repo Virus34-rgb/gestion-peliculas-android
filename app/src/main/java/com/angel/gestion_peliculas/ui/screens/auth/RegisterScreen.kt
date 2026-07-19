@@ -19,8 +19,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.angel.gestion_peliculas.model.LoginData
 import com.angel.gestion_peliculas.ui.components.auth.AuthScreen
-import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 import com.angel.gestion_peliculas.ui.components.auth.Contrasena
+import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 import com.angel.gestion_peliculas.viewmodel.PeliculaViewModel
 
 @Composable
@@ -36,11 +36,15 @@ fun RegisterScreen(navController: NavController) {
     LaunchedEffect(condicion) {
         if (condicion == true) {
             viewModel.resetCond()
-            Toast.makeText(context, "Registro completado, ya puedes iniciar sesión", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "Registro completado, ya puedes iniciar sesión",
+                Toast.LENGTH_SHORT
+            ).show()
             navController.popBackStack()
         }
     }
-    AuthScreen("Crear tu cuenta",cargando,error,viewModel::resetError) {
+    AuthScreen("Crear tu cuenta", cargando, error, viewModel::resetError) {
         OutlinedTextField(
             enabled = cargando != true,
             value = user,
@@ -49,9 +53,13 @@ fun RegisterScreen(navController: NavController) {
         )
         Contrasena(pass, { pass = it }, "Contraseña", cargando)
         Contrasena(pass2, { pass2 = it }, "Confirmar Contraseña", cargando)
-        BotonPrincipal("Registrar",cargando != true && user.isNotBlank()
-                && pass.isNotBlank() && pass2.isNotBlank(),
-            Modifier.fillMaxWidth().padding(16.dp)){
+        BotonPrincipal(
+            "Registrar", cargando != true && user.isNotBlank()
+                    && pass.isNotBlank() && pass2.isNotBlank(),
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             if (pass == pass2) {
                 viewModel.register(LoginData(user, pass))
             } else {

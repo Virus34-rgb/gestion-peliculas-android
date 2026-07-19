@@ -15,20 +15,26 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestion_peliculas.model.ResenaPublicaResponse
 
 @Composable
-fun SeccionResenasPublicas(resenasPublicas : List<ResenaPublicaResponse>, onClick : () -> Unit){
-    Card(modifier = Modifier.fillMaxWidth().padding(8.dp)){
+fun SeccionResenasPublicas(resenasPublicas: List<ResenaPublicaResponse>, onClick: () -> Unit) {
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            Text(text = "Reseñas de usuarios: ",
-                style = MaterialTheme.typography.titleMedium)
-            LazyRow(){
-                items(resenasPublicas.take(5)){resena ->
+            Text(
+                text = "Reseñas de usuarios: ",
+                style = MaterialTheme.typography.titleMedium
+            )
+            LazyRow() {
+                items(resenasPublicas.take(5)) { resena ->
                     ResenaPublicaCard(resena)
                 }
             }
-            TextButton(enabled = resenasPublicas.size > 5,
-                onClick = onClick) {
+            TextButton(
+                enabled = resenasPublicas.size > 5,
+                onClick = onClick
+            ) {
                 Text(text = "Ver el resto")
             }
         }

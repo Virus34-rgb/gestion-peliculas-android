@@ -16,8 +16,13 @@ import my.nanihadesuka.compose.LazyColumnScrollbar
 import my.nanihadesuka.compose.ScrollbarSettings
 
 @Composable
-fun ListaResenas(lista: LazyListState,resenas : List<Resena>, cargando : Boolean?
-                 ,navController : NavController,modifier: Modifier = Modifier){
+fun ListaResenas(
+    lista: LazyListState,
+    resenas: List<Resena>,
+    cargando: Boolean?,
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     LazyColumnScrollbar(
         state = lista,
         settings = ScrollbarSettings.Default,
@@ -25,8 +30,7 @@ fun ListaResenas(lista: LazyListState,resenas : List<Resena>, cargando : Boolean
     ) {
         if (resenas.isEmpty() && cargando == false) {
             EmptyState(Icons.Default.Movie, "Aún no has añadido ninguna reseña")
-        }
-        else {
+        } else {
             LazyColumn(state = lista, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(resenas, key = { resena -> resena.resenaId ?: resena.nombre }) { resena ->
                     PeliculaCard(resena, cargando, navController)

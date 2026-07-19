@@ -12,11 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AuthContainer(contenido : @Composable () -> Unit){ //como pongo el parametro contenido?
-    ElevatedCard(elevation = CardDefaults.cardElevation(4.dp,)
-        , modifier = Modifier.fillMaxWidth()){//Como ajusto la elevacion?
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)){
+fun AuthContainer(contenido: @Composable () -> Unit) { //como pongo el parametro contenido?
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(4.dp), modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             contenido()
         }
     }

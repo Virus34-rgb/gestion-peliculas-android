@@ -14,11 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestion_peliculas.ui.components.common.BaseScreen
 
 @Composable
-fun AuthScreen(titulo: String, loading: Boolean?, error: String?,onErrorReset : () -> Unit,
-               content: @Composable ColumnScope.() -> Unit){
-    BaseScreen(loading,error,onErrorReset) {
-        Surface(modifier = Modifier.fillMaxSize()){
-            Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+fun AuthScreen(
+    titulo: String, loading: Boolean?, error: String?, onErrorReset: () -> Unit,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    BaseScreen(loading, error, onErrorReset) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Column(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)

@@ -9,14 +9,14 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.delay
 
 @Composable
-fun ScreenLoading(cargando: Boolean?){
+fun ScreenLoading(cargando: Boolean?) {
     var esperaLarga by remember { mutableStateOf(false) }
-    LaunchedEffect(cargando){
-        if(cargando == true){
+    LaunchedEffect(cargando) {
+        if (cargando == true) {
             esperaLarga = false
             delay(5000)
             esperaLarga = true
-        }else{
+        } else {
             esperaLarga = false
         }
     }

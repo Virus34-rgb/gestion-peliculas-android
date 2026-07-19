@@ -12,10 +12,12 @@ import com.angel.gestion_peliculas.model.Resena
 import com.angel.gestion_peliculas.ui.components.common.ConfirmDeleteDialog
 
 @Composable
-fun DetalleResenaContent(resena : Resena?, cargando : Boolean, mostrarDialogo : Boolean,
-                         onConfirmarBorrado : () -> Unit, onCancelarBorrado : () -> Unit ,
-                         onBorrar : () -> Unit, onActualizar : () -> Unit,modifier: Modifier){
-    if(mostrarDialogo){
+fun DetalleResenaContent(
+    resena: Resena?, cargando: Boolean, mostrarDialogo: Boolean,
+    onConfirmarBorrado: () -> Unit, onCancelarBorrado: () -> Unit,
+    onBorrar: () -> Unit, onActualizar: () -> Unit, modifier: Modifier
+) {
+    if (mostrarDialogo) {
         ConfirmDeleteDialog(
             "Confirmar Borrado",
             "Estas apunto de borrar una reseña,estas seguro de querer hacerlo?",
@@ -24,13 +26,19 @@ fun DetalleResenaContent(resena : Resena?, cargando : Boolean, mostrarDialogo : 
         )
     }
     Column(modifier = modifier) {
-        CabeceraPelicula(resena!!.posterPath,resena.nombre,resena.nota
-            ,modifier = Modifier.padding(horizontal = 16.dp))
-        InformacionPelicula(resena.generos,resena.fecha.toString()) {
+        CabeceraPelicula(
+            resena!!.posterPath,
+            resena.nombre,
+            resena.nota,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+        InformacionPelicula(resena.generos, resena.fecha.toString()) {
             if (!resena.opinion.isNullOrBlank()) {
-                Text(text = "Opinión: ${resena.opinion}",
+                Text(
+                    text = "Opinión: ${resena.opinion}",
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
         AccionesResena(

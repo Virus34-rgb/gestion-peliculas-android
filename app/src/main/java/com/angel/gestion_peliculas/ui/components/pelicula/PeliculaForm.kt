@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.angel.gestion_peliculas.model.ResenaRequest
 import com.angel.gestion_peliculas.model.TMDBGenres
 import com.angel.gestion_peliculas.ui.components.common.BaseScreen
 import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
@@ -32,29 +31,33 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PeliculaForm(navController: NavController, id: Long? = null) {
-    val generosDisponibles  = TMDBGenres.genres.values.toList()
+    val generosDisponibles = TMDBGenres.genres.values.toList()
     val viewModel: PeliculaViewModel = viewModel()
     val resena by viewModel.resena.observeAsState()
     val condicion by viewModel.condicion.observeAsState()
     val peliculasTMDB by viewModel.peliculasTMDB.observeAsState()
-    var tmdbId : Long? by remember { mutableStateOf(null) }
+    var tmdbId: Long? by remember { mutableStateOf(null) }
     var nombre by remember { mutableStateOf("") }
-    var fecha: LocalDate? by remember {  mutableStateOf(resena?.fecha) }
+    var fecha: LocalDate? by remember { mutableStateOf(resena?.fecha) }
     var notaSlider by remember { mutableFloatStateOf(resena?.nota?.toFloat() ?: 0f) }
-    var opinion : String? by remember {  mutableStateOf(null) }
-    val generosSeleccionados = remember { mutableStateListOf<String>().also {
-        it.addAll(resena?.generos?: emptyList())
-    } }
-    var posterPath : String? by remember { mutableStateOf("") }
+    var opinion: String? by remember { mutableStateOf(null) }
+    val generosSeleccionados = remember {
+        mutableStateListOf<String>().also {
+            it.addAll(resena?.generos ?: emptyList())
+        }
+    }
+    var posterPath: String? by remember { mutableStateOf("") }
     val cargando by viewModel.cargando.observeAsState()
     val error by viewModel.error.observeAsState()
     var intentoEnviar by remember { mutableStateOf(false) }
+    //navegacion
     LaunchedEffect(condicion) {
         if (condicion == true) {
             navController.popBackStack() // vuelve a la lista
         }
         viewModel.resetCond()
     }
+    //cargar datos al editar
     LaunchedEffect(resena) {
         resena?.let {
             nombre = it.nombre
@@ -67,16 +70,18 @@ fun PeliculaForm(navController: NavController, id: Long? = null) {
             tmdbId = it.tmdbId
         }
     }
+    //SincronizarFormulario
     LaunchedEffect(id) {
         if (id != null) viewModel.getById(id)
     }
+    //BuscarTMDB
     LaunchedEffect(nombre) {
         delay(400);
-        if(nombre.length > 2){
+        if (nombre.length > 2) {
             viewModel.searchTMDB(nombre)
         }
     }
-    BaseScreen(cargando ,error, viewModel::resetError) {
+    BaseScreen(cargando, error, viewModel::resetError) {
         val titulo =
             if (id == null)
                 "Añadir reseña"
@@ -90,21 +95,17 @@ fun PeliculaForm(navController: NavController, id: Long? = null) {
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         BuscadorTMDB(
-                            nombre,
-                            { nombre = it }, peliculasTMDB,
-                            { pelicula ->
-                                nombre = pelicula.title
-                                fecha = try {
-                                    LocalDate.parse(pelicula.release_date)
-                                } catch (e: Exception) {
-                                    null
-                                }
-                                posterPath = pelicula.poster_path
-                                generosSeleccionados.clear()
-                                generosSeleccionados.addAll(
-                                    pelicula.genre_ids.mapNotNull
-                                    { TMDBGenres.genres[it.toInt()] })
-                                tmdbId = pelicula.id
+                            nombre, { nombre = it }, peliculasTMDB,
+                            {
+                                seleccionarPeliculaTMDB(
+                                    pelicula = it, onNombre = { nombre = it },
+                                    onFecha = { fecha = it }, onPoster = { posterPath = it },
+                                    onGeneros = {
+                                        generosSeleccionados.clear()
+                                        generosSeleccionados.addAll(it)
+                                    },
+                                    onTmdbId = { tmdbId = it }
+                                )
                             },
                             cargando != true, intentoEnviar && nombre.isBlank(), "Ingrese el nombre"
                         )
@@ -127,20 +128,14 @@ fun PeliculaForm(navController: NavController, id: Long? = null) {
                             intentoEnviar = true
                             if (!(nombre.isBlank() || generosSeleccionados.isEmpty() || fecha == null)) {
                                 val notaDouble = notaSlider.toDouble()
+                                val request = crearResenaRequest(
+                                    tmdbId, nombre, generosSeleccionados,
+                                    fecha!!, posterPath, notaDouble, opinion
+                                )
                                 if (id == null) {
-                                    viewModel.add(
-                                        ResenaRequest(
-                                            tmdbId, nombre, ArrayList(generosSeleccionados),
-                                            fecha!!, posterPath, notaDouble, opinion
-                                        )
-                                    )
+                                    viewModel.add(request)
                                 } else {
-                                    viewModel.update(
-                                        id, ResenaRequest(
-                                            tmdbId, nombre, ArrayList(generosSeleccionados),
-                                            fecha!!, posterPath, notaDouble, opinion
-                                        )
-                                    )
+                                    viewModel.update(id, request)
                                 }
                             }
                         }

@@ -26,8 +26,10 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 @Composable
-fun SelectorFecha(fecha: LocalDate?, onFechaSeleccionada: (LocalDate) -> Unit, enabled: Boolean,
-                  isError: Boolean = false, mensajeError: String? = null){
+fun SelectorFecha(
+    fecha: LocalDate?, onFechaSeleccionada: (LocalDate) -> Unit, enabled: Boolean,
+    isError: Boolean = false, mensajeError: String? = null
+) {
     val datePickerState = rememberDatePickerState()
     var showDatePicker by remember { mutableStateOf(false) }
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -65,7 +67,8 @@ fun SelectorFecha(fecha: LocalDate?, onFechaSeleccionada: (LocalDate) -> Unit, e
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
-                Button(enabled = enabled,
+                Button(
+                    enabled = enabled,
                     onClick = {
                         showDatePicker = false
                         datePickerState.selectedDateMillis?.let { millis ->

@@ -18,16 +18,22 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestion_peliculas.ui.components.common.BotonOrden
 
 @Composable
-fun SortBar(cargando : Boolean?, onOrdenar : (String, Boolean) -> Unit){
+fun SortBar(cargando: Boolean?, onOrdenar: (String, Boolean) -> Unit) {
     var criterioActual by remember { mutableStateOf("") }
     var ascendente by remember { mutableStateOf(true) }
     val nombre = "Nombre"
     val nota = "Nota"
     val fecha = "Fecha"
-    Surface(color = MaterialTheme.colorScheme.surfaceVariant){
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp),modifier = Modifier.padding(8.dp)){
+    Surface(color = MaterialTheme.colorScheme.surfaceVariant) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(8.dp)
+        ) {
             Text(text = "Ordenar por:", style = MaterialTheme.typography.labelLarge)
-            Row(horizontalArrangement = Arrangement.SpaceEvenly,modifier = Modifier.fillMaxWidth()){
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 BotonOrden(nombre, criterioActual.equals(nombre), ascendente) {
                     ascendente = if (criterioActual.equals(nombre)) !ascendente else true
                     criterioActual = nombre

@@ -17,18 +17,22 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestion_peliculas.model.ResenaPublicaResponse
 
 @Composable
-fun ResenaPublicaCard(resena : ResenaPublicaResponse){
+fun ResenaPublicaCard(resena: ResenaPublicaResponse) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)){
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
-                Text(text = resena.username,
+        Column(Modifier.padding(16.dp)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = resena.username,
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold)
+                    fontWeight = FontWeight.Bold
+                )
                 NotaEstrella(resena.nota, 30.dp, Modifier)
             }
             Spacer(Modifier.height(12.dp))
-            Text(text = resena.opinion ?: "Sin Opinion",
-                style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = resena.opinion ?: "Sin Opinion",
+                style = MaterialTheme.typography.bodySmall
+            )
             Spacer(Modifier.height(12.dp))
             Text(
                 text = "Publicada el ${resena.fechaPublicacion}",

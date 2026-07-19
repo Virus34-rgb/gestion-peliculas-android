@@ -23,15 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.angel.gestion_peliculas.ui.components.common.BaseScreen
-import com.angel.gestion_peliculas.ui.components.search.BuscadorPeliculas
 import com.angel.gestion_peliculas.ui.components.common.EmptyState
 import com.angel.gestion_peliculas.ui.components.common.PantallaConMenu
 import com.angel.gestion_peliculas.ui.components.pelicula.PeliculaBusquedaCard
+import com.angel.gestion_peliculas.ui.components.search.BuscadorPeliculas
 import com.angel.gestion_peliculas.viewmodel.BuscarViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun BuscarScreen(navController : NavHostController){
+fun BuscarScreen(navController: NavHostController) {
     val viewModel: BuscarViewModel = viewModel()
     var query by remember { mutableStateOf("") }
     val peliculasTMDB by viewModel.peliculasTMDB.observeAsState(emptyList())
@@ -47,17 +47,21 @@ fun BuscarScreen(navController : NavHostController){
             viewModel.limpiarBusqueda()
         }
     }
-    BaseScreen(cargando,error,viewModel::resetError) {
+    BaseScreen(cargando, error, viewModel::resetError) {
         PantallaConMenu(navController, "Buscar", mostrarBottomBar = true) { padding ->
-            Column(Modifier.fillMaxSize().padding(padding)) {
-                BuscadorPeliculas(query,Modifier.padding(16.dp)) {
+            Column(Modifier
+                .fillMaxSize()
+                .padding(padding)) {
+                BuscadorPeliculas(query, Modifier.padding(16.dp)) {
                     query = it
                 }
                 when {
                     query.isBlank() ->
-                        EmptyState(Icons.Default.Search,"Busca una película para comenzar")
+                        EmptyState(Icons.Default.Search, "Busca una película para comenzar")
+
                     peliculasTMDB.isEmpty() && cargando == false ->
-                        EmptyState(Icons.Default.SearchOff,"No se encontraron películas")
+                        EmptyState(Icons.Default.SearchOff, "No se encontraron películas")
+
                     else -> LazyVerticalGrid(
                         columns = GridCells.Adaptive(160.dp),
                         contentPadding = PaddingValues(16.dp),

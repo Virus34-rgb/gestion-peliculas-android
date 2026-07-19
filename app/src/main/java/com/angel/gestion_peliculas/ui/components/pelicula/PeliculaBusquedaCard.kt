@@ -24,12 +24,16 @@ import com.angel.gestion_peliculas.R
 import com.angel.gestion_peliculas.model.TMDBMovie
 
 @Composable
-fun PeliculaBusquedaCard(pelicula : TMDBMovie, onclick : () -> Unit,
-                         cargando : Boolean?){
+fun PeliculaBusquedaCard(
+    pelicula: TMDBMovie, onclick: () -> Unit,
+    cargando: Boolean?
+) {
 
-    Card (
-        modifier = Modifier.fillMaxWidth().clickable(enabled = cargando != true)
-        {onclick()},
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = cargando != true)
+            { onclick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         shape = RoundedCornerShape(12.dp)
@@ -43,12 +47,14 @@ fun PeliculaBusquedaCard(pelicula : TMDBMovie, onclick : () -> Unit,
                 placeholder = painterResource(R.drawable.placeholder),
                 error = painterResource(R.drawable.ic_no_poster),
                 fallback = painterResource(R.drawable.ic_no_poster),
-                modifier = Modifier.aspectRatio(2f/3f)
+                modifier = Modifier.aspectRatio(2f / 3f)
             )
             NotaEstrella(
                 pelicula.vote_average,
                 size = 45.dp,
-                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp)
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
             )
         }
         Text(

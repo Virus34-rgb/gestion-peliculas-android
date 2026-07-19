@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun BotonPrincipal(texto: String, habilitado: Boolean, modifier : Modifier , onClick: () -> Unit){
+fun BotonPrincipal(texto: String, habilitado: Boolean, modifier: Modifier, onClick: () -> Unit) {
     Button(
         enabled = habilitado,
         onClick = onClick,

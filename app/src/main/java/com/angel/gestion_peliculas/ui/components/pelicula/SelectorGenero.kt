@@ -27,14 +27,18 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectorGeneros(seleccionados: SnapshotStateList<String>, disponibles: List<String>, enabled: Boolean,
-                    isError: Boolean = false, mensajeError: String? = null){
+fun SelectorGeneros(
+    seleccionados: SnapshotStateList<String>, disponibles: List<String>, enabled: Boolean,
+    isError: Boolean = false, mensajeError: String? = null
+) {
     var showBottomSheet by remember { mutableStateOf(false) }
     Row(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
             enabled = enabled,
             modifier = Modifier.weight(1f),
-            value = if (seleccionados.isEmpty()) "Sin generos seleccionados" else seleccionados.joinToString(", "),
+            value = if (seleccionados.isEmpty()) "Sin generos seleccionados" else seleccionados.joinToString(
+                ", "
+            ),
             onValueChange = { },
             isError = isError,
             supportingText = {

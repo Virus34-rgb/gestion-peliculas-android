@@ -19,7 +19,7 @@ fun DetalleCatalogoContent(detalleTMDB : TMDBMovie?, watchProviders : CountryPro
                            resenasPublicas : List<ResenaPublicaResponse>,
                            notaSlider : Float, opinion : String?, cargando : Boolean?,
                            onNotaChange : (Float) -> Unit, onOpinionChange : (String) -> Unit,
-                           modifier : Modifier,onResenasPublicas : () -> Unit,onGuardar : () -> Unit){
+                           modifier: Modifier,onResenasPublicas : () -> Unit,onGuardar : () -> Unit){
     LazyColumn(modifier = modifier) {
         item{
             CabeceraPelicula(detalleTMDB!!.poster_path,detalleTMDB!!.title,
@@ -37,7 +37,9 @@ fun DetalleCatalogoContent(detalleTMDB : TMDBMovie?, watchProviders : CountryPro
                     fontWeight = FontWeight.Bold
                 )
             }
-            Card(Modifier.fillMaxWidth().padding(8.dp)) {
+            Card(Modifier
+                .fillMaxWidth()
+                .padding(8.dp)) {
                 SeccionProveedores(watchProviders)
             }
             SeccionResenasPublicas(resenasPublicas,onResenasPublicas)

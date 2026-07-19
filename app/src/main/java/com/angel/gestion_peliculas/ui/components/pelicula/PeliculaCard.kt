@@ -21,17 +21,30 @@ import androidx.navigation.NavController
 import com.angel.gestion_peliculas.model.Resena
 
 @Composable
-fun PeliculaCard (resena : Resena, cargando : Boolean?, navController: NavController){
-    ElevatedCard (
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clickable(enabled = cargando != true)
-        {navController.navigate("detalle/${resena.resenaId}")},
+fun PeliculaCard(resena: Resena, cargando: Boolean?, navController: NavController) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .clickable(enabled = cargando != true)
+            { navController.navigate("detalle/${resena.resenaId}") },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(16.dp)//debería ser mas?
     ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            ImagenPath(resena.posterPath, resena.nombre, Modifier.width(60.dp).height(90.dp))
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ImagenPath(resena.posterPath, resena.nombre, Modifier
+                .width(60.dp)
+                .height(90.dp))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Text(
                     text = resena.nombre,
                     style = MaterialTheme.typography.titleLarge

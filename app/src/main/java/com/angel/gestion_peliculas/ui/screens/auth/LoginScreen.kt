@@ -1,6 +1,5 @@
 package com.angel.gestion_peliculas.ui.screens.auth
 
-import com.angel.gestion_peliculas.model.LoginData
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -19,9 +18,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.angel.gestion_peliculas.model.LoginData
 import com.angel.gestion_peliculas.ui.components.auth.AuthScreen
-import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 import com.angel.gestion_peliculas.ui.components.auth.Contrasena
+import com.angel.gestion_peliculas.ui.components.common.BotonPrincipal
 import com.angel.gestion_peliculas.viewmodel.PeliculaViewModel
 
 @Composable
@@ -41,7 +41,7 @@ fun LoginScreen(navController: NavController) {
             }
         }
     }
-    AuthScreen("Accede a tu coleción de reseñas",cargando,error,viewModel::resetError) {
+    AuthScreen("Accede a tu coleción de reseñas", cargando, error, viewModel::resetError) {
         OutlinedTextField(
             enabled = cargando != true,
             value = user,
@@ -49,13 +49,20 @@ fun LoginScreen(navController: NavController) {
             label = { Text("Nombre de Usuario") }
         )
         Contrasena(pass, { pass = it }, "Contraseña", cargando)
-        BotonPrincipal("Iniciar Sesion",
+        BotonPrincipal(
+            "Iniciar Sesion",
             cargando != true && user.isNotBlank() && pass.isNotBlank(),
-            Modifier.fillMaxWidth().padding(16.dp)){
-            viewModel.login(LoginData(user, pass),context)
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            viewModel.login(LoginData(user, pass), context)
         }
         TextButton(onClick = { navController.navigate("registro") }) {
-            Text(text = "¿No tienes cuenta? Regístrate", style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = "¿No tienes cuenta? Regístrate",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
