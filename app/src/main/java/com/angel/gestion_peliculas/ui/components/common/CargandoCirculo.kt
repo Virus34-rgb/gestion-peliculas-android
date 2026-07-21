@@ -23,13 +23,12 @@ fun CargandoCirculo(cargando: Boolean?, esperaLarga: Boolean) {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 CircularProgressIndicator()
-                Spacer(modifier = Modifier.height(8.dp))
                 if (esperaLarga) {
+                    Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = "El servidor puede tardar unos segundos en responder...",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.weight(2f)
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }

@@ -1,5 +1,6 @@
 package com.angel.gestion_peliculas.ui.components.common
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 
 @Composable
@@ -10,8 +11,8 @@ fun BaseScreen(
     content: @Composable () -> Unit
 ) {
     ScreenError(cargando, error, onErrorReset)
-    ScreenLoading(cargando)
-    if (cargando == false) {
+    Box {
         content()
+        ScreenLoading(cargando)
     }
 }

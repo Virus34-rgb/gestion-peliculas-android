@@ -66,20 +66,22 @@ fun DetalleScreen(navController: NavController, resenaId: Long?, tmdbId: Long?) 
     BaseScreen(cargando, error, viewModel::resetError) {
         PantallaConMenu(navController, "Detalles", mostrarBottomBar = false) { padding ->
             if (resenaId != null) {
-                DetalleResenaContent(
-                    resena, cargando == true, mostrarDialogoBorrado,
-                    {
-                        viewModel.delete(resenaId!!)
-                        mostrarDialogoBorrado = false
-                        navController.popBackStack()
-                    },
-                    { mostrarDialogoBorrado = false }, { mostrarDialogoBorrado = true },
-                    { navController.navigate("actualizar/$resenaId") },
-                    Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                )
-            } else {
+                resena?.let {
+                    DetalleResenaContent(
+                        resena, cargando == true, mostrarDialogoBorrado,
+                        {
+                            viewModel.delete(resenaId!!)
+                            mostrarDialogoBorrado = false
+                            navController.popBackStack()
+                        },
+                        { mostrarDialogoBorrado = false }, { mostrarDialogoBorrado = true },
+                        { navController.navigate("actualizar/$resenaId") },
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding)
+                    )
+                }
+            } else if (detalleTMDB != null) {
                 DetalleCatalogoContent(
                     detalleTMDB, watchProviders, resenasPublicas,
                     notaSlider, opinion, cargando, { notaSlider = it },

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NotaEstrella(nota: Double, size: Dp = 60.dp, modifier: Modifier?) {
+fun NotaEstrella(nota: Double, size: Dp = 60.dp, modifier: Modifier) {
     val colorSegunNota = when {
         nota >= 9 -> Color(0xFFF4E5A1)// dorado rosado
         nota >= 7 -> Color(0xFF4CAF50) // verde
@@ -25,7 +25,7 @@ fun NotaEstrella(nota: Double, size: Dp = 60.dp, modifier: Modifier?) {
         nota >= 2 -> Color(0xFFE53935) // rojo
         else -> Color(0xFF6A1B9A) // morado
     }
-    Box(contentAlignment = Alignment.Center, modifier = Modifier) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
         // Estrella negra de fondo (el "borde")
         Icon(
             imageVector = Icons.Filled.Star,
@@ -48,7 +48,7 @@ fun NotaEstrella(nota: Double, size: Dp = 60.dp, modifier: Modifier?) {
         }
         Text(
             text = notaTexto,
-            fontSize = (size.value * 0.3f).sp,
+            fontSize = (size.value * 0.2f).sp,
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Black,
             fontWeight = FontWeight.Bold

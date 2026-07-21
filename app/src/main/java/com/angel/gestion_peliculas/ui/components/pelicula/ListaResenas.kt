@@ -33,7 +33,9 @@ fun ListaResenas(
         } else {
             LazyColumn(state = lista, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(resenas, key = { resena -> resena.resenaId ?: resena.nombre }) { resena ->
-                    PeliculaCard(resena, cargando, navController)
+                    PeliculaCard(resena, cargando ){
+                        navController.navigate("detalle/${resena.resenaId}")
+                    }
                 }
             }
         }

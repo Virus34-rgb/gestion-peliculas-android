@@ -1,5 +1,6 @@
 package com.angel.gestion_peliculas.ui.screens.peliculas
 
+import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,7 +38,8 @@ fun ListaScreen(navController: NavController){
     }
     BaseScreen(cargando, error, viewModel::resetError) {
         PantallaConMenu(navController, "Películas", mostrarBottomBar = true) { padding->
-            Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            Column(modifier = Modifier.fillMaxSize().padding(padding),
+                verticalArrangement = spacedBy(8.dp)) {
                 SortBar(cargando = cargando,
                     onOrdenar = { criterio, ascendente -> viewModel.getAllFiltered(criterio, ascendente) }
                 )

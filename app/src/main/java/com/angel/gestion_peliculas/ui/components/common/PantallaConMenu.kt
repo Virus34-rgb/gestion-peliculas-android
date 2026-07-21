@@ -2,6 +2,7 @@ package com.angel.gestion_peliculas.ui.components.common
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -91,7 +92,8 @@ fun PantallaConMenu(
                                 painterResource(R.drawable.list_add),
                                 contentDescription = "Lista"
                             )
-                        })
+                        }
+                    )
                     NavigationBarItem(
                         selected = currentRoute == "buscar",
                         onClick = {
@@ -108,7 +110,24 @@ fun PantallaConMenu(
                                 painterResource(R.drawable.search_item),
                                 contentDescription = "Buscar"
                             )
-                        })
+                        }
+                    )
+                    NavigationBarItem(
+                        selected = currentRoute == "estadisticas",
+                        onClick = {
+                            navController.navigate("estadisticas") {
+                                launchSingleTop = true
+                                restoreState = true
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                            }
+                        },
+                        icon = {
+                            Icon(Icons.Default.BarChart,
+                                contentDescription = "Estadisticas")
+                        }
+                    )
                 }
             }
         }

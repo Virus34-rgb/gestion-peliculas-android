@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.angel.gestion_peliculas.ui.screens.peliculas.BuscarScreen
 import com.angel.gestion_peliculas.ui.screens.auth.RegisterScreen
+import com.angel.gestion_peliculas.ui.screens.peliculas.EstadisticasScreen
 import com.angel.gestion_peliculas.ui.screens.resenas.ReseñasPeliculaScreen
 import kotlinx.coroutines.launch
 
@@ -90,6 +91,9 @@ class MainActivity : ComponentActivity() {
                         composable("resenasPelicula/{peliculaId}") { backStackEntry ->
                             val peliculaId = backStackEntry.arguments?.getString("peliculaId")?.toLong()
                             ReseñasPeliculaScreen(navController, peliculaId!!)
+                        }
+                        composable("estadisticas") {
+                            EstadisticasScreen(navController)
                         }
                     }
                 }
