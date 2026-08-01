@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  android-build:
+  build:
 
     runs-on: ubuntu-latest
 
