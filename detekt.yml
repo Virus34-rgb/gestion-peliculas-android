@@ -1,0 +1,6 @@
+naming:
+  FunctionNaming:
+    active: false
+
+  PackageNaming:
+    active: false

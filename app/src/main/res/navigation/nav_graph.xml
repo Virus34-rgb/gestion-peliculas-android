@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listaFragment"
-        android:name="com.angel.gestion_peliculas.ListaFragment"
+        android:name="com.angel.gestionpeliculas.ListaFragment"
         android:label="fragment_lista"
         tools:layout="@layout/fragment_lista" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/detalleFragment"
-        android:name="com.angel.gestion_peliculas.DetalleFragment"
+        android:name="com.angel.gestionpeliculas.DetalleFragment"
         android:label="fragment_detalle"
         tools:layout="@layout/fragment_detalle" >
         <action
@@ -28,17 +28,17 @@
     </fragment>
     <fragment
         android:id="@+id/anadirFragment"
-        android:name="com.angel.gestion_peliculas.anadirFragment"
+        android:name="com.angel.gestionpeliculas.anadirFragment"
         android:label="fragment_anadir"
         tools:layout="@layout/fragment_anadir" />
     <fragment
         android:id="@+id/actualizarFragment"
-        android:name="com.angel.gestion_peliculas.ActualizarFragment"
+        android:name="com.angel.gestionpeliculas.ActualizarFragment"
         android:label="fragment_actualizar"
         tools:layout="@layout/fragment_actualizar" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.angel.gestion_peliculas.LoginFragment"
+        android:name="com.angel.gestionpeliculas.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
