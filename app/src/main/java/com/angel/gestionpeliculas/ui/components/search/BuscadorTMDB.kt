@@ -14,30 +14,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.angel.gestionpeliculas.model.TMDBMovie
+import com.angel.gestionpeliculas.model.parametros.BuscadorTMDBData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BuscadorTMDB(
-    nombre: String,
-    onNombreChange: (String) -> Unit,
-    resultados: List<TMDBMovie>?,
-    onPeliculaSeleccionada: (TMDBMovie) -> Unit,
-    enabled: Boolean,
-    isError: Boolean = false,
-    mensajeError: String? = null,
-) {
+fun BuscadorTMDB(param: BuscadorTMDBData) {
     var expanded by remember { mutableStateOf(false) }
+    val enabled = param.enabled
+    val isError = param.isError
+    val mensajeError = param.mensajeError
+    val resultados = param.resultados
     ExposedDropdownMenuBox(
-        expanded = expanded && resultados?.isNotEmpty() == true && enabled,
+        expanded = expanded && param.resultados?.isNotEmpty() == true && enabled,
         onExpandedChange = { expanded = it },
     ) {
         OutlinedTextField(
             enabled = enabled,
             modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
-            value = nombre,
+            value = param.nombre,
             onValueChange = {
-                onNombreChange(it)
+                param.onNombreChange(it)
                 expanded = true
             },
             label = { Text("Nombre") },
@@ -57,7 +53,7 @@ fun BuscadorTMDB(
                 DropdownMenuItem(
                     text = { Text(pelicula.title) },
                     onClick = {
-                        onPeliculaSeleccionada(pelicula)
+                        param.onPeliculaSeleccionada(pelicula)
                         expanded = false
                     },
                 )

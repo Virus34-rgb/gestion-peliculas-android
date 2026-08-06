@@ -4,5 +4,5 @@ import java.time.LocalDate
 
 data class ActividadData(
     val fecha: LocalDate,
-    val cantidadReseñas: Int,
+    val cantidadResenas: Int,
 )

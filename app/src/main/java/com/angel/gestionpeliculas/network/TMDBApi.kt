@@ -12,7 +12,7 @@ interface TMDBApi {
     @GET("/3/search/movie")
     suspend fun getFilmTMDB(
         @Query("query") query: String,
-        @Query("api_key") api_key: String,
+        @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("sort_by") sortBy: String = "popularity.desc",
     ): Response<TMDBResponse>

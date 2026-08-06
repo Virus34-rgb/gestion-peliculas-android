@@ -12,12 +12,14 @@ import com.angel.gestionpeliculas.ui.theme.TicketColors
 @Composable
 fun TicketBackground(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = modifier.background(
-            brush = Brush.verticalGradient(colors = listOf(TicketColors.Background, TicketColors.BackgroundDark)),
-            shape = RoundedCornerShape(16.dp))
+        modifier =
+            modifier.background(
+                brush = Brush.verticalGradient(colors = listOf(TicketColors.Background, TicketColors.BackgroundDark)),
+                shape = RoundedCornerShape(16.dp),
+            ),
     ) {
         content()
     }

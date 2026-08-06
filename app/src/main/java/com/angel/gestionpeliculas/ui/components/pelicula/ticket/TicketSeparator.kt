@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestionpeliculas.ui.theme.TicketColors
 
 @Composable
-fun TicketSeparator(modifier : Modifier){
+fun TicketSeparator(modifier: Modifier) {
     val color = TicketColors.Separator
     Canvas(modifier = modifier) {
         val centro = size.width / 2

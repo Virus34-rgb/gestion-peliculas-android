@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
 import com.angel.gestionpeliculas.ui.components.common.BaseScreen
 import com.angel.gestionpeliculas.ui.components.common.EmptyState
 import com.angel.gestionpeliculas.ui.components.common.PantallaConMenu
@@ -59,10 +60,14 @@ fun BuscarScreen(navController: NavHostController) {
                 }
                 when {
                     query.isBlank() ->
-                        EmptyState(Icons.Default.Search, "Busca una película para comenzar")
+                        EmptyState(
+                            EmptyStateData(Icons.Default.Search, "Busca una película para comenzar"),
+                        )
 
                     peliculasTMDB.isEmpty() && cargando == false ->
-                        EmptyState(Icons.Default.SearchOff, "No se encontraron películas")
+                        EmptyState(
+                            EmptyStateData(Icons.Default.SearchOff, "No se encontraron películas"),
+                        )
 
                     else ->
                         LazyVerticalGrid(

@@ -10,18 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.angel.gestionpeliculas.model.ActividadData
-import java.time.YearMonth
+import com.angel.gestionpeliculas.model.parametros.ActividadCardData
 
 @Composable
-fun ActividadCard(
-    mes: YearMonth,
-    lista: List<ActividadData>?,
-    limiteSup: YearMonth?,
-    limiteInf: YearMonth?,
-    onClickIzq: () -> Unit,
-    onClickDer: () -> Unit,
-) {
+fun ActividadCard(param: ActividadCardData) {
+    val mes = param.mes
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier =
@@ -34,9 +27,9 @@ fun ActividadCard(
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ActivityHeader(mes, onClickIzq, onClickDer, limiteSup, limiteInf)
+            ActivityHeader(mes, param.onClickIzq, param.onClickDer, param.limiteSup, param.limiteInf)
             ActivityWeekHeader(Modifier)
-            ActivityCalendar(mes, lista)
+            ActivityCalendar(mes, param.lista)
             LeyendaActividad()
         }
     }

@@ -4,3 +4,45 @@ naming:
 
   PackageNaming:
     active: false
+
+style:
+  MagicNumber:
+    active: false
+    ignoreNumbers:
+      - "-1"
+      - "0"
+      - "1"
+      - "2"
+    ignoreHashCodeFunction: true
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+    ignoreConstantDeclaration: true
+    ignoreAnnotation: true
+    ignoreEnums: true
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 100
+
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 9
+
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 25
+
+  NestedBlockDepth:
+    active: true
+    threshold: 5
+
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+    thresholdInClasses: 15
+
+performance:
+  SpreadOperator:
+    active: false

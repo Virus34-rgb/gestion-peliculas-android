@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.angel.gestionpeliculas.model.ResumenData
+import java.util.Locale
 
 @Composable
 fun ResumenGeneralCard(resumen: ResumenData?) {
@@ -34,12 +35,12 @@ fun ResumenGeneralCard(resumen: ResumenData?) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 ResumenItem("\uD83C\uDFAC", "Numero de Reseñas", resumen!!.numero.toString())
-                val notaMedia = String.format("%.2f", resumen!!.notaMedia)
-                ResumenItem("⭐", "Nota media", notaMedia.toString())
+                val notaMedia = String.format(Locale.getDefault(), "%.2f", resumen.notaMedia)
+                ResumenItem("⭐", "Nota media", notaMedia)
             }
             HorizontalDivider(thickness = 2.dp)
             ResumenItem("\uD83C\uDFC6 Mejor Pelicula", resumen!!.mejor)
-            ResumenItem("\uD83D\uDC94 Peor Pelicula", resumen!!.peor)
+            ResumenItem("\uD83D\uDC94 Peor Pelicula", resumen.peor)
         }
     }
 }

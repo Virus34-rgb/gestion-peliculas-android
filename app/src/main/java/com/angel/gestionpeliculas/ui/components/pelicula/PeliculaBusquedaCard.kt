@@ -41,10 +41,10 @@ fun PeliculaBusquedaCard(
         Box(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model =
-                    if (pelicula.poster_path.isNullOrBlank()) {
+                    if (pelicula.posterPath.isNullOrBlank()) {
                         null
                     } else {
-                        "https://image.tmdb.org/t/p/w500${pelicula.poster_path}"
+                        "https://image.tmdb.org/t/p/w500${pelicula.posterPath}"
                     },
                 contentDescription = pelicula.title,
                 contentScale = ContentScale.Crop,
@@ -54,7 +54,7 @@ fun PeliculaBusquedaCard(
                 modifier = Modifier.aspectRatio(2f / 3f),
             )
             NotaEstrella(
-                pelicula.vote_average,
+                pelicula.voteAverage,
                 size = 15.dp,
                 modifier =
                     Modifier
@@ -71,7 +71,7 @@ fun PeliculaBusquedaCard(
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = pelicula.release_date.take(4),
+            text = pelicula.releaseDate.take(4),
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

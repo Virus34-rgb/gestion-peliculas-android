@@ -35,16 +35,17 @@ fun TicketPelicula(
         TicketBorder(Modifier.matchParentSize())
 
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .padding(TicketBorderWidth)
-                .clickable(enabled = cargando != true) { onClick() },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .padding(TicketBorderWidth)
+                    .clickable(enabled = cargando != true) { onClick() },
             shape = RoundedCornerShape(16.dp),
             shadowElevation = 6.dp,
             color = TicketColors.Background,
         ) {
-            TicketBackground() {
+            TicketBackground {
                 TicketTexture(Modifier.matchParentSize())
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -58,9 +59,10 @@ fun TicketPelicula(
                             .padding(16.dp),
                     )
                     TicketSeparator(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .align(Alignment.CenterVertically),
+                        modifier =
+                            Modifier
+                                .height(100.dp)
+                                .align(Alignment.CenterVertically),
                     )
                     RightSection(
                         resena,
@@ -120,7 +122,7 @@ private fun RightSection(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier,
     ) {
         NotaEstrella(resena.nota, 10.dp, Modifier.align(Alignment.TopEnd))
         TicketBarcode(

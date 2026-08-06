@@ -12,20 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.angel.gestionpeliculas.model.parametros.InformaconPrincipalPeliculaData
 
 @Composable
-fun InformacionPrincipalPelicula(
-    titulo: String,
-    generos: List<String>,
-    valoracionTMDB: Double,
-    numVotosTMDB: Int,
-    valoracion: Double,
-    numResenas: Int,
-    fecha: String,
-) {
+fun InformacionPrincipalPelicula(param: InformaconPrincipalPeliculaData) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
-            text = titulo,
+            text = param.titulo,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -34,7 +27,7 @@ fun InformacionPrincipalPelicula(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            for (genero in generos) {
+            for (genero in param.generos) {
                 GenreChip(genero)
             }
         }
@@ -43,11 +36,16 @@ fun InformacionPrincipalPelicula(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            ValoracionResumen("TMDB", valoracionTMDB, numVotosTMDB, "votos")
-            if (numResenas > 0) {
-                ValoracionResumen("Mi colección", valoracion, numResenas, "reseñas")
+            ValoracionResumen(
+                "TMDB",
+                param.valoracionTMDB,
+                param.numVotosTMDB,
+                "votos",
+            )
+            if (param.numResenas > 0) {
+                ValoracionResumen("Mi colección", param.valoracion, param.numResenas, "reseñas")
             }
         }
-        DatoPelicula("Fecha de estreno", fecha.toString())
+        DatoPelicula("Fecha de estreno", param.fecha)
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.angel.gestionpeliculas.model.Resena
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
 import com.angel.gestionpeliculas.ui.components.common.EmptyState
 import my.nanihadesuka.compose.LazyColumnScrollbar
 import my.nanihadesuka.compose.ScrollbarSettings
@@ -29,7 +30,9 @@ fun ListaResenas(
         modifier = modifier,
     ) {
         if (resenas.isEmpty() && cargando == false) {
-            EmptyState(Icons.Default.Movie, "Aún no has añadido ninguna reseña")
+            EmptyState(
+                EmptyStateData(Icons.Default.Movie, "Aún no has añadido ninguna reseña"),
+            )
         } else {
             LazyColumn(state = lista, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(resenas, key = { resena -> resena.resenaId ?: resena.nombre }) { resena ->

@@ -22,13 +22,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HeroPelicula(
     posterPath: String?,
-    titulo: String,
     onBack: () -> Unit,
     nombre: String,
-    habilitado: Boolean,
 ) {
     Box(modifier = Modifier.fillMaxWidth().height(300.dp), contentAlignment = Alignment.TopCenter) {
         ImagenPath(posterPath, nombre, Modifier.fillMaxWidth().height(300.dp))
+        val valores = listOf(0f, 0.45f, 0.70f, 0.85f, 1.0f)
         Box(
             modifier =
                 Modifier
@@ -37,11 +36,11 @@ fun HeroPelicula(
                         Brush.verticalGradient(
                             colorStops =
                                 arrayOf(
-                                    0.0f to Color.Transparent,
-                                    0.45f to Color.Transparent,
-                                    0.70f to MaterialTheme.colorScheme.surface.copy(alpha = 0.25f),
-                                    0.85f to MaterialTheme.colorScheme.surface.copy(alpha = 0.75f),
-                                    1.0f to MaterialTheme.colorScheme.surface,
+                                    valores[0] to Color.Transparent,
+                                    valores[1] to Color.Transparent,
+                                    valores[2] to MaterialTheme.colorScheme.surface.copy(alpha = 0.25f),
+                                    valores[3] to MaterialTheme.colorScheme.surface.copy(alpha = 0.75f),
+                                    valores[4] to MaterialTheme.colorScheme.surface,
                                 ),
                         ),
                     ),

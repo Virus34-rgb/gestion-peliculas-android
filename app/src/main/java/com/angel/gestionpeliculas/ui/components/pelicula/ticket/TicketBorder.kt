@@ -12,7 +12,7 @@ import com.angel.gestionpeliculas.ui.components.pelicula.TicketOuterPadding
 import com.angel.gestionpeliculas.ui.theme.TicketColors
 
 @Composable
-fun TicketBorder(modifier : Modifier){
+fun TicketBorder(modifier: Modifier) {
     val color = MaterialTheme.colorScheme.background
     val colorRectangulo = TicketColors.Separator
     Canvas(modifier = modifier) {
@@ -39,11 +39,12 @@ fun TicketBorder(modifier : Modifier){
         val separacion = 12.dp.toPx()
         val espacioDisponible = altura - 2 * margenVertical
         val cantidad = (espacioDisponible / separacion).toInt()
-        val espacioReal = if (cantidad > 1) {
-            espacioDisponible / (cantidad - 1)
-        } else {
-            0f
-        }
+        val espacioReal =
+            if (cantidad > 1) {
+                espacioDisponible / (cantidad - 1)
+            } else {
+                0f
+            }
         val alturaMuescas = (cantidad - 1) * espacioReal
         val inicio = (altura - alturaMuescas) / 2
         repeat(cantidad) { i ->

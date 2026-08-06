@@ -22,7 +22,7 @@ fun ActivityCalendar(
     while (dia <= dias) {
         val actividad = lista!!.firstOrNull { it.fecha == mes.atDay(dia) }
         if (actividad != null) {
-            calendario.add(ActivityDayData(mes.atDay(dia), actividad.cantidadReseñas, true))
+            calendario.add(ActivityDayData(mes.atDay(dia), actividad.cantidadResenas, true))
         } else {
             calendario.add(ActivityDayData(mes.atDay(dia), 0, true))
         }

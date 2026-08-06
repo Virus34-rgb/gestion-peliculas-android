@@ -12,6 +12,8 @@ import com.angel.gestionpeliculas.model.ResenaRequest
 import com.angel.gestionpeliculas.model.TMDBMovie
 import com.angel.gestionpeliculas.repository.PeliculaRepository
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class BuscarViewModel : ViewModel() {
     private val repository = PeliculaRepository()
@@ -32,6 +34,7 @@ class BuscarViewModel : ViewModel() {
     private val _condicion = MutableLiveData<Boolean?>()
     val condicion: LiveData<Boolean?> = _condicion
 
+    @Suppress("TooGenericExceptionCaught")
     private fun ejecutar(
         mensajeError: String,
         accion: suspend () -> Unit,
@@ -41,6 +44,7 @@ class BuscarViewModel : ViewModel() {
             try {
                 accion()
             } catch (e: Exception) {
+                Log.e("BuscarViewModel", mensajeError, e)
                 _error.value = mensajeError
             } finally {
                 _cargando.value = false
@@ -53,9 +57,12 @@ class BuscarViewModel : ViewModel() {
             try {
                 val resultado = repository.searchTMDB(query)
                 _peliculasTMDB.value = resultado
-            } catch (e: Exception) {
-                Log.d("ViewModel", "error: ${e.message}")
-                _error.value = e.message
+            } catch (e: IOException) {
+                Log.d("ViewModel", "Error de red", e)
+                _error.value = "Error de conexión"
+            } catch (e: HttpException) {
+                Log.d("ViewModel", "Error HTTP ${e.code()}", e)
+                _error.value = "Error del servidor"
             }
         }
     }

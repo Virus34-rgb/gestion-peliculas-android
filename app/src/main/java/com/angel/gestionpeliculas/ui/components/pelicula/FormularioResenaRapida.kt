@@ -9,17 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.angel.gestionpeliculas.model.parametros.FormularioResenaRapidaData
 import com.angel.gestionpeliculas.ui.components.common.BotonPrincipal
 
 @Composable
-fun FormularioResenaRapida(
-    nota: Float,
-    onNotaChange: (Float) -> Unit,
-    opinion: String?,
-    onOpinionChange: (String) -> Unit,
-    enabled: Boolean,
-    onGuardar: () -> Unit,
-) {
+fun FormularioResenaRapida(param: FormularioResenaRapidaData) {
     Column(
         modifier =
             Modifier
@@ -31,15 +25,15 @@ fun FormularioResenaRapida(
             text = "MI VALORACIÓN",
             style = MaterialTheme.typography.titleSmall,
         )
-        NotaOpinionEditor(nota, onNotaChange, opinion, onOpinionChange, enabled)
+        NotaOpinionEditor(param.nota, param.onNotaChange, param.opinion, param.onOpinionChange, param.enabled)
         BotonPrincipal(
             "Añadir/Actualizar Reseña",
-            enabled,
+            param.enabled,
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            onGuardar()
+            param.onGuardar()
         }
     }
 }

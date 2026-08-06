@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
@@ -24,12 +23,6 @@ object RetrofitClient {
                 LocalDate::class.java,
                 JsonSerializer<LocalDate> { src, _, _ -> JsonPrimitive(src.toString()) },
             ).create()
-    private val logging =
-        HttpLoggingInterceptor { mensaje ->
-            Log.d("HTTP_BODY", mensaje)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
     private val client =
         OkHttpClient
             .Builder()
@@ -53,9 +46,7 @@ object RetrofitClient {
                     TokenManager.onSesionExpirada?.invoke()
                 }
                 response
-            }
-            // .addInterceptor(logging)
-            .connectTimeout(90, TimeUnit.SECONDS)
+            }.connectTimeout(90, TimeUnit.SECONDS)
             .readTimeout(90, TimeUnit.SECONDS)
             .writeTimeout(90, TimeUnit.SECONDS)
             .build()

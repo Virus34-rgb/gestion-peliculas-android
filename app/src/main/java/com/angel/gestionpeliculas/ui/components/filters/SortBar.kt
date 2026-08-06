@@ -18,10 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.angel.gestionpeliculas.ui.components.common.BotonOrden
 
 @Composable
-fun SortBar(
-    cargando: Boolean?,
-    onOrdenar: (String, Boolean) -> Unit,
-) {
+fun SortBar(onOrdenar: (String, Boolean) -> Unit) {
     var criterioActual by remember { mutableStateOf("") }
     var ascendente by remember { mutableStateOf(true) }
     val nombre = "Nombre"

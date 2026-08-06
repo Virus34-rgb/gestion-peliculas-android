@@ -18,7 +18,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.angel.gestionpeliculas.model.Resena
 import com.angel.gestionpeliculas.model.ResenaPublicaResponse
-import com.angel.gestionpeliculas.model.TMDBMovie
+import com.angel.gestionpeliculas.model.parametros.CrearResenaRequestData
+import com.angel.gestionpeliculas.model.parametros.DetalleCatalogoContentData
+import com.angel.gestionpeliculas.model.parametros.DetalleResenaContentData
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
+import com.angel.gestionpeliculas.model.parametros.GuardarResenaRapidoData
 import com.angel.gestionpeliculas.network.TokenManager
 import com.angel.gestionpeliculas.ui.components.common.BaseScreen
 import com.angel.gestionpeliculas.ui.components.common.EmptyState
@@ -55,6 +59,113 @@ fun DetalleScreen(
     var notaSlider by remember { mutableFloatStateOf(resena?.nota?.toFloat() ?: 0f) }
     var opinion: String? by remember { mutableStateOf(null) }
     var miResenaExistente by remember { mutableStateOf<ResenaPublicaResponse?>(null) }
+    HandleCargaDetalleEffect(
+        resenaId = resenaId,
+        tmdbId = tmdbId,
+        viewModel = viewModel,
+        buscarViewModel = buscarViewModel,
+    )
+    HandleMiResenaEffect(
+        resenasPublicas = resenasPublicas,
+        onMiResenaExistente = { miResenaExistente = it },
+        onNota = { notaSlider = it },
+        onOpinion = { opinion = it },
+    )
+    if (resenaId != null && resena == null && cargando == false) {
+        EmptyState(
+            EmptyStateData(Icons.Default.SearchOff, "Reseña no encontrada"),
+        )
+    } else if (tmdbId != null && detalleTMDB == null && cargando == false) {
+        EmptyState(
+            EmptyStateData(Icons.Default.SearchOff, "Pelicula no encontrada"),
+        )
+    }
+    BaseScreen(cargando, error, viewModel::resetError) {
+        PantallaConMenu(navController, "Detalles", mostrarBottomBar = false) { padding ->
+            if (resenaId != null) {
+                resena?.let {
+                    DetalleResenaContent(
+                        DetalleResenaContentData(
+                            resena,
+                            cargando == true,
+                            mostrarDialogoBorrado,
+                            {
+                                viewModel.delete(resenaId)
+                                mostrarDialogoBorrado = false
+                                navController.popBackStack()
+                            },
+                            { mostrarDialogoBorrado = false },
+                            { mostrarDialogoBorrado = true },
+                            { navController.navigate("actualizar/$resenaId") },
+                            { navController.popBackStack() },
+                            Modifier
+                                .fillMaxSize()
+                                .padding(padding),
+                        ),
+                    )
+                }
+            } else if (detalleTMDB != null) {
+                DetalleCatalogoContent(
+                    DetalleCatalogoContentData(
+                        detalleTMDB,
+                        watchProviders,
+                        resenasPublicas,
+                        notaSlider,
+                        opinion,
+                        cargando,
+                        { notaSlider = it },
+                        { opinion = it },
+                        Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        { navController.navigate("resenasPelicula/${peliculaResponse!!.peliculaId}") },
+                        { navController.popBackStack() },
+                    ) {
+                        guardarResenaRapido(
+                            GuardarResenaRapidoData(
+                                buscarViewModel,
+                                miResenaExistente,
+                                tmdbId!!,
+                                detalleTMDB!!,
+                                notaSlider,
+                                opinion,
+                            ),
+                        )
+                    },
+                )
+            }
+        }
+    }
+}
+
+private fun guardarResenaRapido(param: GuardarResenaRapidoData) {
+    val notaDouble = param.nota.toDouble()
+    val resena =
+        crearResenaRequest(
+            CrearResenaRequestData(
+                param.tmdbId,
+                param.detalleTMDB.title,
+                param.detalleTMDB.genres?.map { it.name } ?: emptyList(),
+                LocalDate.parse(param.detalleTMDB.releaseDate),
+                param.detalleTMDB.posterPath,
+                notaDouble,
+                param.opinion,
+            ),
+        )
+    if (param.miResenaExistente == null) {
+        param.buscarViewModel.addResenaRapido(resena)
+    } else {
+        param.buscarViewModel.updateResenaRapido(param.miResenaExistente.resenaId, resena)
+    }
+}
+
+@Composable
+private fun HandleCargaDetalleEffect(
+    resenaId: Long?,
+    tmdbId: Long?,
+    viewModel: PeliculaViewModel,
+    buscarViewModel: BuscarViewModel,
+) {
     LaunchedEffect(Unit) {
         if (resenaId != null) {
             viewModel.getById(resenaId)
@@ -62,92 +173,26 @@ fun DetalleScreen(
             buscarViewModel.buscarPorTMDB(tmdbId)
         }
     }
-    LaunchedEffect(resenasPublicas) {
-        miResenaExistente = resenasPublicas.find { it.username == TokenManager.getUsername() }
-        if (miResenaExistente != null) {
-            notaSlider = miResenaExistente!!.nota.toFloat()
-            opinion = miResenaExistente!!.opinion
-        }
-    }
-    if (resenaId != null && resena == null && cargando == false) {
-        EmptyState(Icons.Default.SearchOff, "Reseña no encontrada")
-    } else if (tmdbId != null && detalleTMDB == null && cargando == false) {
-        EmptyState(Icons.Default.SearchOff, "Pelicula no encontrada")
-    }
-    BaseScreen(cargando, error, viewModel::resetError) {
-        PantallaConMenu(navController, "Detalles", mostrarBottomBar = false) { padding ->
-            if (resenaId != null) {
-                resena?.let {
-                    DetalleResenaContent(
-                        resena,
-                        cargando == true,
-                        mostrarDialogoBorrado,
-                        {
-                            viewModel.delete(resenaId!!)
-                            mostrarDialogoBorrado = false
-                            navController.popBackStack()
-                        },
-                        { mostrarDialogoBorrado = false },
-                        { mostrarDialogoBorrado = true },
-                        { navController.navigate("actualizar/$resenaId") },
-                        { navController.popBackStack() },
-                        Modifier
-                            .fillMaxSize()
-                            .padding(padding),
-                    )
-                }
-            } else if (detalleTMDB != null) {
-                DetalleCatalogoContent(
-                    detalleTMDB,
-                    watchProviders,
-                    resenasPublicas,
-                    notaSlider,
-                    opinion,
-                    cargando,
-                    { notaSlider = it },
-                    { opinion = it },
-                    Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    { navController.navigate("resenasPelicula/${peliculaResponse!!.peliculaId}") },
-                    { navController.popBackStack() },
-                ) {
-                    guardarResenaRapido(
-                        buscarViewModel,
-                        miResenaExistente,
-                        tmdbId!!,
-                        detalleTMDB!!,
-                        notaSlider,
-                        opinion,
-                    )
-                }
-            }
-        }
-    }
 }
 
-private fun guardarResenaRapido(
-    buscarViewModel: BuscarViewModel,
-    miResenaExistente: ResenaPublicaResponse?,
-    tmdbId: Long,
-    detalleTMDB: TMDBMovie,
-    nota: Float,
-    opinion: String?,
+@Composable
+private fun HandleMiResenaEffect(
+    resenasPublicas: List<ResenaPublicaResponse>,
+    onMiResenaExistente: (ResenaPublicaResponse?) -> Unit,
+    onNota: (Float) -> Unit,
+    onOpinion: (String?) -> Unit,
 ) {
-    val notaDouble = nota.toDouble()
-    val resena =
-        crearResenaRequest(
-            tmdbId,
-            detalleTMDB.title,
-            detalleTMDB.genres?.map { it.name } ?: emptyList(),
-            LocalDate.parse(detalleTMDB.release_date),
-            detalleTMDB.poster_path,
-            notaDouble,
-            opinion,
-        )
-    if (miResenaExistente == null) {
-        buscarViewModel.addResenaRapido(resena)
-    } else {
-        buscarViewModel.updateResenaRapido(miResenaExistente!!.resenaId, resena)
+    LaunchedEffect(resenasPublicas) {
+        val miResena =
+            resenasPublicas.find {
+                it.username == TokenManager.getUsername()
+            }
+
+        onMiResenaExistente(miResena)
+
+        miResena?.let {
+            onNota(it.nota.toFloat())
+            onOpinion(it.opinion)
+        }
     }
 }

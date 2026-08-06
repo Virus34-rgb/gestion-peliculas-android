@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
 import com.angel.gestionpeliculas.ui.components.common.BaseScreen
 import com.angel.gestionpeliculas.ui.components.common.EmptyState
 import com.angel.gestionpeliculas.ui.components.common.PantallaConMenu
@@ -37,7 +38,9 @@ fun ResenaPeliculaScreen(
     BaseScreen(cargando, error, viewModel::resetError) {
         PantallaConMenu(navController, "Reseñas", mostrarBottomBar = false) { padding ->
             if (resenas.isEmpty() && cargando == false) {
-                EmptyState(Icons.Default.RateReview, "Todavía nadie ha publicado una reseña")
+                EmptyState(
+                    EmptyStateData(Icons.Default.RateReview, "Todavía nadie ha publicado una reseña"),
+                )
             } else if (cargando == false) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize().padding(padding),

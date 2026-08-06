@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.angel.gestionpeliculas.model.parametros.ActividadCardData
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
 import com.angel.gestionpeliculas.ui.components.common.BaseScreen
 import com.angel.gestionpeliculas.ui.components.common.EmptyState
 import com.angel.gestionpeliculas.ui.components.common.PantallaConMenu
@@ -53,16 +55,7 @@ fun EstadisticasScreen(navController: NavController) {
     BaseScreen(cargando, error, viewModel::resetError) {
         PantallaConMenu(navController, "Estadisticas", true) { padding ->
             if (resumen?.numero == 0) {
-                if (cargando == false) {
-                    EmptyState(
-                        Icons.Default.BarChart,
-                        "Aún no hay estadísticas",
-                        "Empieza creando tu primera reseña para ver tu actividad, géneros favoritos y evolución de notas.",
-                        "Buscar",
-                        { navController.navigate("buscar") },
-                        Modifier.fillMaxSize().padding(padding),
-                    )
-                }
+                MostrarEstadoVacio(cargando == true, { navController.navigate("buscar") }, padding)
             } else {
                 LazyColumn(
                     modifier =
@@ -92,12 +85,14 @@ fun EstadisticasScreen(navController: NavController) {
                         item {
                             StatSection("Actividad") {
                                 ActividadCard(
-                                    mesActual,
-                                    actividad,
-                                    limiteSup,
-                                    limiteInf,
-                                    { mesActual = mesActual.minusMonths(1) },
-                                    { mesActual = mesActual.plusMonths(1) },
+                                    ActividadCardData(
+                                        mesActual,
+                                        actividad,
+                                        limiteSup,
+                                        limiteInf,
+                                        { mesActual = mesActual.minusMonths(1) },
+                                        { mesActual = mesActual.plusMonths(1) },
+                                    ),
                                 )
                             }
                         }
@@ -115,5 +110,25 @@ fun EstadisticasScreen(navController: NavController) {
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun MostrarEstadoVacio(
+    cargando: Boolean,
+    onClick: () -> Unit,
+    padding: PaddingValues,
+) {
+    if (cargando == false) {
+        EmptyState(
+            EmptyStateData(
+                Icons.Default.BarChart,
+                "Aún no hay estadísticas",
+                "Empieza creando tu primera reseña para ver tu actividad, géneros favoritos y evolución de notas.",
+                "Buscar",
+                onClick,
+                Modifier.fillMaxSize().padding(padding),
+            ),
+        )
     }
 }

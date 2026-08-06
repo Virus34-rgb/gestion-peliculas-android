@@ -2,40 +2,28 @@ package com.angel.gestionpeliculas.ui.components.pelicula
 
 import com.angel.gestionpeliculas.model.ResenaRequest
 import com.angel.gestionpeliculas.model.TMDBGenres
-import com.angel.gestionpeliculas.model.TMDBMovie
+import com.angel.gestionpeliculas.model.parametros.CrearResenaRequestData
+import com.angel.gestionpeliculas.model.parametros.SeleccionarPeliculaTMDBData
 import java.time.LocalDate
 
-fun seleccionarPeliculaTMDB(
-    pelicula: TMDBMovie,
-    onNombre: (String) -> Unit,
-    onFecha: (LocalDate?) -> Unit,
-    onPoster: (String?) -> Unit,
-    onGeneros: (List<String>) -> Unit,
-    onTmdbId: (Long?) -> Unit,
-) {
-    onNombre(pelicula.title)
-    onFecha(
+fun seleccionarPeliculaTMDB(param: SeleccionarPeliculaTMDBData) {
+    val pelicula = param.pelicula
+    param.onNombre(pelicula.title)
+    param.onFecha(
         try {
-            LocalDate.parse(pelicula.release_date)
+            LocalDate.parse(pelicula.releaseDate)
         } catch (_: Exception) {
             null
         },
     )
-    onPoster(pelicula.poster_path)
-    onGeneros(
-        pelicula.genre_ids.mapNotNull {
+    param.onPoster(pelicula.posterPath)
+    param.onGeneros(
+        pelicula.genreIds.mapNotNull {
             TMDBGenres.genres[it.toInt()]
         },
     )
-    onTmdbId(pelicula.id)
+    param.onTmdbId(pelicula.id)
 }
 
-fun crearResenaRequest(
-    tmdbId: Long?,
-    nombre: String,
-    generos: List<String>,
-    fecha: LocalDate,
-    posterPath: String?,
-    nota: Double,
-    opinion: String?,
-): ResenaRequest = ResenaRequest(tmdbId, nombre, ArrayList(generos), fecha!!, posterPath, nota, opinion)
+fun crearResenaRequest(p: CrearResenaRequestData): ResenaRequest =
+    ResenaRequest(p.tmdbId, p.nombre, ArrayList(p.generos), p.fecha, p.posterPath, p.nota, p.opinion)

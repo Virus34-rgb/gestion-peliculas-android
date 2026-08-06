@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.unit.dp
 import com.angel.gestionpeliculas.model.DistribucionData
 
@@ -64,8 +65,12 @@ private fun DistribucionItem(
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
             strokeCap = StrokeCap.Butt,
         )
-        val porcentajeTexto = String.format("%.2f", porcentaje * 100)
+        val porcentajeTexto = String.format(LocalLocale.current.platformLocale, "%.2f", porcentaje * 100)
         Spacer(Modifier.width(8.dp))
-        Text(text = "$numero | $porcentajeTexto%", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.width(96.dp))
+        Text(
+            text = "$numero | $porcentajeTexto%",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.width(96.dp),
+        )
     }
 }

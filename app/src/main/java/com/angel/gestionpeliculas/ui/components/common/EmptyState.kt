@@ -12,20 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.angel.gestionpeliculas.model.parametros.EmptyStateData
 
 @Composable
-fun EmptyState(
-    icono: ImageVector,
-    titulo: String,
-    descripcion: String? = null,
-    textoBoton: String? = null,
-    onClickBoton: (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
-) {
+fun EmptyState(param: EmptyStateData) {
     Box(
-        modifier = modifier.fillMaxSize(),
+        modifier = param.modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -33,26 +26,26 @@ fun EmptyState(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Icon(
-                imageVector = icono,
+                imageVector = param.icono,
                 contentDescription = null,
                 modifier = Modifier.size(48.dp),
                 tint = MaterialTheme.colorScheme.primary,
             )
             Text(
-                text = titulo,
+                text = param.titulo,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            if (descripcion != null) {
+            if (param.descripcion != null) {
                 Text(
-                    text = descripcion,
+                    text = param.descripcion,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            if (textoBoton != null && onClickBoton != null) {
-                Button(onClick = onClickBoton) {
-                    Text(textoBoton)
+            if (param.textoBoton != null && param.onClickBoton != null) {
+                Button(onClick = param.onClickBoton) {
+                    Text(param.textoBoton)
                 }
             }
         }

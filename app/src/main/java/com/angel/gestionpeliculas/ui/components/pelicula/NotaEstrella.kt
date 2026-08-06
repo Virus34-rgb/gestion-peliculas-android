@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.util.Locale
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -28,7 +29,7 @@ fun NotaEstrella(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
         var notaE = nota / 2
-        for (i in 0 until 5) {
+        repeat(5) {
             val porcentaje = notaE.coerceIn(0.0, 1.0).toFloat()
             EstrellaParcial(porcentaje, size)
             notaE -= 1.0
@@ -37,12 +38,12 @@ fun NotaEstrella(
             if (nota % 1.0 == 0.0) {
                 nota.toInt().toString()
             } else {
-                String.format("%.1f", nota)
+                String.format(Locale.getDefault(), "%.1f", nota)
             }
         Spacer(Modifier.size(2.dp))
         Text(
             text = notaTexto,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

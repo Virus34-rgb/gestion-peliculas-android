@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -66,37 +68,45 @@ class MainActivity : ComponentActivity() {
                         CircularProgressIndicator()
                     }
                 } else {
-                    NavHost(
-                        navController = navController,
-                        startDestination = startDestinationX!!,
-                        modifier = Modifier.safeDrawingPadding(),
-                    ) {
-                        composable("login") { LoginScreen(navController) }
-                        composable("registro") { RegisterScreen(navController) }
-                        composable("lista") { ListaScreen(navController) }
-                        composable("detalle/{id}") { backStackEntry ->
-                            val id = backStackEntry.arguments?.getString("id")?.toLong()
-                            DetalleScreen(navController, resenaId = id, tmdbId = null)
-                        }
-                        composable("anadir") { AnadirScreen(navController) }
-                        composable("actualizar/{id}") { backStackEntry ->
-                            val id = backStackEntry.arguments?.getString("id")?.toLong()
-                            ActualizarScreen(navController, id!!)
-                        }
-                        composable("buscar") { BuscarScreen(navController) }
-                        composable("detalleCatalogo/{tmdbId}") { backStackEntry ->
-                            val tmdbId = backStackEntry.arguments?.getString("tmdbId")?.toLong()
-                            DetalleScreen(navController, resenaId = null, tmdbId = tmdbId)
-                        }
-                        composable("resenasPelicula/{peliculaId}") { backStackEntry ->
-                            val peliculaId = backStackEntry.arguments?.getString("peliculaId")?.toLong()
-                            ResenaPeliculaScreen(navController, peliculaId!!)
-                        }
-                        composable("estadisticas") {
-                            EstadisticasScreen(navController)
-                        }
-                    }
+                    NavHost(navController, startDestinationX)
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun NavHost(
+        navController: NavHostController,
+        startDestinationX: String?,
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = startDestinationX!!,
+            modifier = Modifier.safeDrawingPadding(),
+        ) {
+            composable("login") { LoginScreen(navController) }
+            composable("registro") { RegisterScreen(navController) }
+            composable("lista") { ListaScreen(navController) }
+            composable("detalle/{id}") { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")?.toLong()
+                DetalleScreen(navController, resenaId = id, tmdbId = null)
+            }
+            composable("anadir") { AnadirScreen(navController) }
+            composable("actualizar/{id}") { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")?.toLong()
+                ActualizarScreen(navController, id!!)
+            }
+            composable("buscar") { BuscarScreen(navController) }
+            composable("detalleCatalogo/{tmdbId}") { backStackEntry ->
+                val tmdbId = backStackEntry.arguments?.getString("tmdbId")?.toLong()
+                DetalleScreen(navController, resenaId = null, tmdbId = tmdbId)
+            }
+            composable("resenasPelicula/{peliculaId}") { backStackEntry ->
+                val peliculaId = backStackEntry.arguments?.getString("peliculaId")?.toLong()
+                ResenaPeliculaScreen(navController, peliculaId!!)
+            }
+            composable("estadisticas") {
+                EstadisticasScreen(navController)
             }
         }
     }

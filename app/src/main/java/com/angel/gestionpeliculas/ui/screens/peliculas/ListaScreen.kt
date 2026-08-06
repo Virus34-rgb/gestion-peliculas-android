@@ -43,7 +43,6 @@ fun ListaScreen(navController: NavController) {
                 verticalArrangement = spacedBy(8.dp),
             ) {
                 SortBar(
-                    cargando = cargando,
                     onOrdenar = { criterio, ascendente -> viewModel.getAllFiltered(criterio, ascendente) },
                 )
                 ListaResenas(lista, resenas, cargando, navController, Modifier.weight(1f))

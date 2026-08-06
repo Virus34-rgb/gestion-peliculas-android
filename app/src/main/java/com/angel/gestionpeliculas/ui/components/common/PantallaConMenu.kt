@@ -40,8 +40,7 @@ fun PantallaConMenu(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
+
     var menuAbierto by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
@@ -56,83 +55,102 @@ fun PantallaConMenu(
                     IconButton(onClick = { menuAbierto = true }) {
                         Icon(imageVector = Icons.Default.MoreVert, contentDescription = "Opciones")
                     }
-                    DropdownMenu(
-                        expanded = menuAbierto,
-                        onDismissRequest = { menuAbierto = false },
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Cerrar sesión") },
-                            onClick = {
-                                menuAbierto = false
-                                scope.launch {
-                                    TokenManager.logout(context)
-                                    navController.navigate("login") { popUpTo(navController.graph.id) { inclusive = true } }
-                                }
-                            },
-                        )
+                    DropDown(menuAbierto, { menuAbierto = false }) {
+                        menuAbierto = false
+                        scope.launch {
+                            TokenManager.logout(context)
+                            navController.navigate("login") { popUpTo(navController.graph.id) { inclusive = true } }
+                        }
                     }
                 },
             )
         },
         bottomBar = {
-            if (mostrarBottomBar) {
-                NavigationBar {
-                    NavigationBarItem(
-                        selected = currentRoute == "lista",
-                        onClick = {
-                            navController.navigate("lista") {
-                                launchSingleTop = true
-                                restoreState = true
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                painterResource(R.drawable.list_add),
-                                contentDescription = "Lista",
-                            )
-                        },
-                    )
-                    NavigationBarItem(
-                        selected = currentRoute == "buscar",
-                        onClick = {
-                            navController.navigate("buscar") {
-                                launchSingleTop = true
-                                restoreState = true
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                painterResource(R.drawable.search_item),
-                                contentDescription = "Buscar",
-                            )
-                        },
-                    )
-                    NavigationBarItem(
-                        selected = currentRoute == "estadisticas",
-                        onClick = {
-                            navController.navigate("estadisticas") {
-                                launchSingleTop = true
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                }
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                Icons.Default.BarChart,
-                                contentDescription = "Estadisticas",
-                            )
-                        },
-                    )
-                }
-            }
+            BottomBar(mostrarBottomBar, navController)
         },
     ) { padding ->
         content(padding)
+    }
+}
+
+@Composable
+private fun DropDown(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    onClick: () -> Unit,
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest,
+    ) {
+        DropdownMenuItem(
+            text = { Text("Cerrar sesión") },
+            onClick = onClick,
+        )
+    }
+}
+
+@Composable
+private fun BottomBar(
+    mostrarBottomBar: Boolean,
+    navController: NavController,
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+    if (mostrarBottomBar) {
+        NavigationBar {
+            NavigationBarItem(
+                selected = currentRoute == "lista",
+                onClick = {
+                    navController.navigate("lista") {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                    }
+                },
+                icon = {
+                    Icon(
+                        painterResource(R.drawable.list_add),
+                        contentDescription = "Lista",
+                    )
+                },
+            )
+            NavigationBarItem(
+                selected = currentRoute == "buscar",
+                onClick = {
+                    navController.navigate("buscar") {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                    }
+                },
+                icon = {
+                    Icon(
+                        painterResource(R.drawable.search_item),
+                        contentDescription = "Buscar",
+                    )
+                },
+            )
+            NavigationBarItem(
+                selected = currentRoute == "estadisticas",
+                onClick = {
+                    navController.navigate("estadisticas") {
+                        launchSingleTop = true
+                        popUpTo(navController.graph.findStartDestination().id) {
+                        }
+                    }
+                },
+                icon = {
+                    Icon(
+                        Icons.Default.BarChart,
+                        contentDescription = "Estadisticas",
+                    )
+                },
+            )
+        }
     }
 }
