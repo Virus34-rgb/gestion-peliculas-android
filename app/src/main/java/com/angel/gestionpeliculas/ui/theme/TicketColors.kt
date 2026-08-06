@@ -3,6 +3,8 @@ package com.angel.gestionpeliculas.ui.theme
 import androidx.compose.ui.graphics.Color
 
 object TicketColors {
+    val BackgroundDark = Color(0xFFE4C98A)
+
     // Papel del ticket
     val Background = Color(0xFFF6E7B0)
 

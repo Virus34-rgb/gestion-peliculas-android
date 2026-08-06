@@ -39,10 +39,10 @@ fun NotaEstrella(
             } else {
                 String.format("%.1f", nota)
             }
-        Spacer(Modifier.size(8.dp))
+        Spacer(Modifier.size(2.dp))
         Text(
             text = notaTexto,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -62,7 +62,7 @@ fun EstrellaParcial(
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = null,
-            tint = Color(0xFFF4E5A1),
+            tint = Color(0xFFC0C0C0),
             modifier =
                 Modifier
                     .matchParentSize()
