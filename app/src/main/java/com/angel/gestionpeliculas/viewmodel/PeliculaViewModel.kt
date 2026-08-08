@@ -2,8 +2,6 @@ package com.angel.gestionpeliculas.viewmodel
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angel.gestionpeliculas.model.ActividadData
@@ -18,6 +16,7 @@ import com.angel.gestionpeliculas.model.ResumenData
 import com.angel.gestionpeliculas.model.TMDBMovie
 import com.angel.gestionpeliculas.network.TokenManager
 import com.angel.gestionpeliculas.repository.PeliculaRepository
+import com.angel.gestionpeliculas.repository.TMDBRepository
 import com.angel.gestionpeliculas.statistics.calcularActividad
 import com.angel.gestionpeliculas.statistics.calcularDistribucionGeneros
 import com.angel.gestionpeliculas.statistics.calcularDistribucionNotas
@@ -25,6 +24,8 @@ import com.angel.gestionpeliculas.statistics.calcularEvolucion
 import com.angel.gestionpeliculas.statistics.calcularRacha
 import com.angel.gestionpeliculas.statistics.calcularResumen
 import com.angel.gestionpeliculas.statistics.getUltimaReseña
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -32,36 +33,37 @@ import java.time.YearMonth
 
 class PeliculaViewModel : ViewModel() {
     private val repository = PeliculaRepository()
-    private val _resenas = MutableLiveData<List<Resena>>()
-    val resenas: LiveData<List<Resena>> = _resenas
-    private val _resena = MutableLiveData<Resena?>()
-    val resena: LiveData<Resena?> = _resena
-    private val _condicion = MutableLiveData<Boolean?>()
-    val condicion: LiveData<Boolean?> = _condicion
-    private val _cargando = MutableLiveData<Boolean>()
-    val cargando = _cargando
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
-    private val _peliculasTMDB = MutableLiveData<List<TMDBMovie>>()
-    val peliculasTMDB: LiveData<List<TMDBMovie>> = _peliculasTMDB
-    private val _resumen = MutableLiveData<ResumenData?>()
-    val resumen: LiveData<ResumenData?> = _resumen
-    private val _notas = MutableLiveData<List<DistribucionData>>()
-    val notas: LiveData<List<DistribucionData>> = _notas
-    private val _generos = MutableLiveData<List<GeneroData>>()
-    val generos: LiveData<List<GeneroData>> = _generos
-    private val _actividad = MutableLiveData<List<ActividadData>>()
-    val actividad: LiveData<List<ActividadData>> = _actividad
-    private val _ultimaResena = MutableLiveData<Resena?>()
-    val ultimaResena: LiveData<Resena?> = _ultimaResena
-    private val _racha = MutableLiveData<RachaData?>()
-    val racha: LiveData<RachaData?> = _racha
-    private val _evolucion = MutableLiveData<List<EvolucionData>?>()
-    val evolucion: LiveData<List<EvolucionData>?> = _evolucion
-    private val _limiteSup = MutableLiveData<YearMonth?>()
-    val limiteSup: LiveData<YearMonth?> = _limiteSup
-    private val _limiteInf = MutableLiveData<YearMonth?>()
-    val limiteInf: LiveData<YearMonth?> = _limiteInf
+    private val tRepository = TMDBRepository()
+    private val _resenas = MutableStateFlow<List<Resena>>(emptyList())
+    val resenas: StateFlow<List<Resena>> = _resenas
+    private val _resena = MutableStateFlow<Resena?>(null)
+    val resena: StateFlow<Resena?> = _resena
+    private val _condicion = MutableStateFlow<Boolean?>(null)
+    val condicion: StateFlow<Boolean?> = _condicion
+    private val _cargando = MutableStateFlow(false)
+    val cargando: StateFlow<Boolean> = _cargando
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+    private val _peliculasTMDB = MutableStateFlow<List<TMDBMovie>>(emptyList())
+    val peliculasTMDB: StateFlow<List<TMDBMovie>> = _peliculasTMDB
+    private val _resumen = MutableStateFlow<ResumenData?>(null)
+    val resumen: StateFlow<ResumenData?> = _resumen
+    private val _notas = MutableStateFlow<List<DistribucionData>>(emptyList())
+    val notas: StateFlow<List<DistribucionData>> = _notas
+    private val _generos = MutableStateFlow<List<GeneroData>>(emptyList())
+    val generos: StateFlow<List<GeneroData>> = _generos
+    private val _actividad = MutableStateFlow<List<ActividadData>>(emptyList())
+    val actividad: StateFlow<List<ActividadData>> = _actividad
+    private val _ultimaResena = MutableStateFlow<Resena?>(null)
+    val ultimaResena: StateFlow<Resena?> = _ultimaResena
+    private val _racha = MutableStateFlow<RachaData?>(null)
+    val racha: StateFlow<RachaData?> = _racha
+    private val _evolucion = MutableStateFlow<List<EvolucionData>?>(null)
+    val evolucion: StateFlow<List<EvolucionData>?> = _evolucion
+    private val _limiteSup = MutableStateFlow<YearMonth?>(null)
+    val limiteSup: StateFlow<YearMonth?> = _limiteSup
+    private val _limiteInf = MutableStateFlow<YearMonth?>(null)
+    val limiteInf: StateFlow<YearMonth?> = _limiteInf
 
     @Suppress("TooGenericExceptionCaught")
     private fun ejecutar(
@@ -159,7 +161,7 @@ class PeliculaViewModel : ViewModel() {
     fun searchTMDB(query: String) {
         viewModelScope.launch {
             try {
-                val resultado = repository.searchTMDB(query)
+                val resultado = tRepository.searchTMDB(query)
                 _peliculasTMDB.value = resultado
             } catch (e: IOException) {
                 Log.d("ViewModel", "Error de red", e)

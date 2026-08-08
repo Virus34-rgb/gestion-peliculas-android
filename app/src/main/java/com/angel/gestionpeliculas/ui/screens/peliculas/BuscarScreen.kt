@@ -13,8 +13,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,9 +35,9 @@ import kotlinx.coroutines.delay
 fun BuscarScreen(navController: NavHostController) {
     val viewModel: BuscarViewModel = viewModel()
     var query by remember { mutableStateOf("") }
-    val peliculasTMDB by viewModel.peliculasTMDB.observeAsState(emptyList())
-    val error by viewModel.error.observeAsState()
-    val cargando by viewModel.cargando.observeAsState()
+    val peliculasTMDB by viewModel.peliculasTMDB.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val cargando by viewModel.cargando.collectAsState()
     LaunchedEffect(query) {
         delay(400)
         val texto = query.trim()

@@ -2,6 +2,7 @@ package com.angel.gestionpeliculas.ui.components.pelicula
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import com.angel.gestionpeliculas.model.getTrailer
 import com.angel.gestionpeliculas.model.parametros.DetalleCatalogoContentData
 import com.angel.gestionpeliculas.model.parametros.FormularioResenaRapidaData
 import com.angel.gestionpeliculas.model.parametros.InformaconPrincipalPeliculaData
@@ -20,35 +21,54 @@ fun DetalleCatalogoContent(param: DetalleCatalogoContentData) {
         }
     LazyColumn(modifier = param.modifier) {
         item {
-            HeroPelicula(
-                param.detalleTMDB!!.posterPath,
-                param.onBack,
-                param.detalleTMDB.title,
-            )
-            InformacionPrincipalPelicula(
-                InformaconPrincipalPeliculaData(
-                    param.detalleTMDB.title,
-                    param.detalleTMDB.genres?.map { it.name } ?: emptyList(),
-                    param.detalleTMDB.voteAverage,
-                    param.detalleTMDB.voteCount,
-                    valoracion,
-                    param.resenasPublicas.size,
-                    param.detalleTMDB.releaseDate,
-                ),
-            )
-            TituloTexto("SINOPSIS", param.detalleTMDB.overview)
-            DistribuidoresPelicula(param.watchProviders)
-            ResenasPelicula(param.resenasPublicas, param.onResenasPublicas)
-            FormularioResenaRapida(
-                FormularioResenaRapidaData(
-                    param.notaSlider,
-                    onNotaChange = param.onNotaChange,
-                    param.opinion,
-                    onOpinionChange = param.onOpinionChange,
-                    param.cargando != true,
-                    { param.onGuardar() },
-                ),
-            )
+            param.detalleTMDB?.let { p ->
+                HeroPelicula(
+                    p.posterPath,
+                    param.onBack,
+                    p.title,
+                )
+                InformacionPrincipalPelicula(
+                    InformaconPrincipalPeliculaData(
+                        p.title,
+                        p.genres?.map { it.name } ?: emptyList(),
+                        p.voteAverage,
+                        p.voteCount,
+                        valoracion,
+                        param.resenasPublicas.size,
+                        p.releaseDate,
+                        p.runtime,
+                    ),
+                )
+                val trailer = getTrailer(param.video)
+                Trailer(trailer?.key, trailer?.name)
+                TituloTexto("SINOPSIS", param.detalleTMDB.overview)
+                param.credits?.let { c ->
+                    val director = c.crew.firstOrNull { it.job == "Director" }
+                    director?.let { d ->
+                        DirectorDetalle(d)
+                    }
+                    val casting = c.cast.sortedBy { it.order }.take(10)
+                    CastingDetalle(casting)
+                }
+                DistribuidoresPelicula(param.watchProviders)
+                ResenasPelicula(param.resenasPublicas, param.onResenasPublicas)
+                FormularioResenaRapida(
+                    FormularioResenaRapidaData(
+                        param.notaSlider,
+                        onNotaChange = param.onNotaChange,
+                        param.opinion,
+                        onOpinionChange = param.onOpinionChange,
+                        param.cargando != true,
+                        { param.onGuardar() },
+                    ),
+                )
+                param.collection?.let { p ->
+                    PeliculasTexto("MÁS PELICULAS DE LA SAGA", p.parts, param.navController)
+                }
+                param.similar?.let { p ->
+                    PeliculasTexto("PELICULAS SIMILARES", p.results, param.navController)
+                }
+            }
         }
     }
 }

@@ -9,8 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,18 +37,18 @@ import java.time.YearMonth
 @Composable
 fun EstadisticasScreen(navController: NavController) {
     val viewModel: PeliculaViewModel = viewModel()
-    val resumen by viewModel.resumen.observeAsState()
-    val notas by viewModel.notas.observeAsState()
-    val generos by viewModel.generos.observeAsState()
-    val actividad by viewModel.actividad.observeAsState()
-    val resena by viewModel.ultimaResena.observeAsState()
-    val limiteInf by viewModel.limiteInf.observeAsState()
-    val limiteSup by viewModel.limiteSup.observeAsState()
-    val racha by viewModel.racha.observeAsState()
-    val evolucion by viewModel.evolucion.observeAsState()
+    val resumen by viewModel.resumen.collectAsState()
+    val notas by viewModel.notas.collectAsState()
+    val generos by viewModel.generos.collectAsState()
+    val actividad by viewModel.actividad.collectAsState()
+    val resena by viewModel.ultimaResena.collectAsState()
+    val limiteInf by viewModel.limiteInf.collectAsState()
+    val limiteSup by viewModel.limiteSup.collectAsState()
+    val racha by viewModel.racha.collectAsState()
+    val evolucion by viewModel.evolucion.collectAsState()
     var mesActual: YearMonth by remember { mutableStateOf(YearMonth.now()) }
-    val cargando by viewModel.cargando.observeAsState()
-    val error by viewModel.error.observeAsState()
+    val cargando by viewModel.cargando.collectAsState()
+    val error by viewModel.error.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.cargarEstadisticas(12)
     }
@@ -127,7 +127,9 @@ private fun MostrarEstadoVacio(
                 "Empieza creando tu primera reseña para ver tu actividad, géneros favoritos y evolución de notas.",
                 "Buscar",
                 onClick,
-                Modifier.fillMaxSize().padding(padding),
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding),
             ),
         )
     }

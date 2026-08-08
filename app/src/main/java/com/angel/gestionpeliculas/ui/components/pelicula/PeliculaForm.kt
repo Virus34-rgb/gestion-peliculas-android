@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,9 +45,9 @@ fun PeliculaForm(
 ) {
     val generosDisponibles = TMDBGenres.genres.values.toList()
     val viewModel: PeliculaViewModel = viewModel()
-    val resena by viewModel.resena.observeAsState()
-    val condicion by viewModel.condicion.observeAsState()
-    val peliculasTMDB by viewModel.peliculasTMDB.observeAsState()
+    val resena by viewModel.resena.collectAsState()
+    val condicion by viewModel.condicion.collectAsState()
+    val peliculasTMDB by viewModel.peliculasTMDB.collectAsState()
     var tmdbId: Long? by remember { mutableStateOf(null) }
     var nombre by remember { mutableStateOf("") }
     var fecha: LocalDate? by remember { mutableStateOf(resena?.fecha) }
@@ -60,8 +60,8 @@ fun PeliculaForm(
             }
         }
     var posterPath: String? by remember { mutableStateOf("") }
-    val cargando by viewModel.cargando.observeAsState()
-    val error by viewModel.error.observeAsState()
+    val cargando by viewModel.cargando.collectAsState()
+    val error by viewModel.error.collectAsState()
     var intentoEnviar by remember { mutableStateOf(false) }
     HandleNavigationEffect(condicion, navController, viewModel)
     HandleResenaSyncEffect(

@@ -7,8 +7,8 @@ import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,19 +43,26 @@ fun DetalleScreen(
 ) {
     val viewModel: PeliculaViewModel = viewModel()
     val buscarViewModel: BuscarViewModel = viewModel()
-    val resena: Resena? by viewModel.resena.observeAsState()
+    val resena: Resena? by viewModel.resena.collectAsState()
+
     val cargando =
         if (resenaId != null) {
-            viewModel.cargando.observeAsState().value
+            viewModel.cargando.collectAsState().value
         } else {
-            buscarViewModel.cargando.observeAsState().value
+            buscarViewModel.cargando.collectAsState().value
         }
     var mostrarDialogoBorrado by remember { mutableStateOf(false) }
-    val error by viewModel.error.observeAsState()
-    val detalleTMDB by buscarViewModel.detalleTMDB.observeAsState()
-    val peliculaResponse by buscarViewModel.peliculaResponse.observeAsState()
-    val resenasPublicas by buscarViewModel.resenas.observeAsState(emptyList())
-    val watchProviders by buscarViewModel.watchProviders.observeAsState()
+    val error by viewModel.error.collectAsState()
+
+    val detalleTMDB by buscarViewModel.detalleTMDB.collectAsState()
+    val peliculaResponse by buscarViewModel.peliculaResponse.collectAsState()
+    val resenasPublicas by buscarViewModel.resenas.collectAsState()
+    val watchProviders by buscarViewModel.watchProviders.collectAsState()
+    val credits by buscarViewModel.credits.collectAsState()
+    val similar by buscarViewModel.similar.collectAsState()
+    val videos by buscarViewModel.videos.collectAsState()
+    val collection by buscarViewModel.collection.collectAsState()
+
     var notaSlider by remember { mutableFloatStateOf(resena?.nota?.toFloat() ?: 0f) }
     var opinion: String? by remember { mutableStateOf(null) }
     var miResenaExistente by remember { mutableStateOf<ResenaPublicaResponse?>(null) }
@@ -110,6 +117,10 @@ fun DetalleScreen(
                         detalleTMDB,
                         watchProviders,
                         resenasPublicas,
+                        videos,
+                        credits,
+                        collection,
+                        similar,
                         notaSlider,
                         opinion,
                         cargando,
@@ -120,18 +131,20 @@ fun DetalleScreen(
                             .padding(padding),
                         { navController.navigate("resenasPelicula/${peliculaResponse!!.peliculaId}") },
                         { navController.popBackStack() },
-                    ) {
-                        guardarResenaRapido(
-                            GuardarResenaRapidoData(
-                                buscarViewModel,
-                                miResenaExistente,
-                                tmdbId!!,
-                                detalleTMDB!!,
-                                notaSlider,
-                                opinion,
-                            ),
-                        )
-                    },
+                        {
+                            guardarResenaRapido(
+                                GuardarResenaRapidoData(
+                                    buscarViewModel,
+                                    miResenaExistente,
+                                    tmdbId!!,
+                                    detalleTMDB!!,
+                                    notaSlider,
+                                    opinion,
+                                ),
+                            )
+                        },
+                        navController,
+                    ),
                 )
             }
         }
@@ -171,6 +184,7 @@ private fun HandleCargaDetalleEffect(
             viewModel.getById(resenaId)
         } else if (tmdbId != null) {
             buscarViewModel.buscarPorTMDB(tmdbId)
+            buscarViewModel.getAllExtras(tmdbId)
         }
     }
 }

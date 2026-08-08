@@ -7,5 +7,6 @@ data class InformaconPrincipalPeliculaData(
     val numVotosTMDB: Int,
     val valoracion: Double,
     val numResenas: Int,
-    val fecha: String,
+    val fecha: String?,
+    val runtime: Int?,
 )

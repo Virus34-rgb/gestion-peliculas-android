@@ -71,7 +71,7 @@ fun PeliculaBusquedaCard(
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = pelicula.releaseDate.take(4),
+            text = pelicula.releaseDate?.take(4) ?: "----",
             modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

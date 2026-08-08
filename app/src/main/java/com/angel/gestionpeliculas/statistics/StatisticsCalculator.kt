@@ -1,6 +1,5 @@
 package com.angel.gestionpeliculas.statistics
 
-import androidx.lifecycle.MutableLiveData
 import com.angel.gestionpeliculas.model.ActividadData
 import com.angel.gestionpeliculas.model.DistribucionData
 import com.angel.gestionpeliculas.model.EvolucionData
@@ -9,6 +8,7 @@ import com.angel.gestionpeliculas.model.RachaData
 import com.angel.gestionpeliculas.model.Resena
 import com.angel.gestionpeliculas.model.ResumenData
 import com.angel.gestionpeliculas.model.SemanaActividad
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.WeekFields
@@ -78,8 +78,8 @@ fun calcularDistribucionGeneros(resultado: List<Resena>): List<GeneroData> {
 
 fun calcularActividad(
     resultado: List<Resena>,
-    limiteSup: MutableLiveData<YearMonth?>,
-    limiteInf: MutableLiveData<YearMonth?>,
+    limiteSup: MutableStateFlow<YearMonth?>,
+    limiteInf: MutableStateFlow<YearMonth?>,
 ): List<ActividadData> {
     val mapa = mutableMapOf<LocalDate, Int>()
     for (resena in resultado) {
@@ -180,9 +180,7 @@ fun semanaAnterior(semana: SemanaActividad): SemanaActividad {
     val uno = 1
     if (semana.semana == uno) {
         val ultimaSemana =
-            LocalDate
-                .of(semana.anio - uno, mes, dia)
-                .get(WeekFields.ISO.weekOfWeekBasedYear())
+            LocalDate.of(semana.anio - uno, mes, dia).get(WeekFields.ISO.weekOfWeekBasedYear())
 
         return SemanaActividad(semana.anio - uno, ultimaSemana)
     }

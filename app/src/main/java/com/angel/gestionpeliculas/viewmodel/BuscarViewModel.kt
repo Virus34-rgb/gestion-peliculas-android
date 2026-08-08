@@ -1,38 +1,50 @@
 package com.angel.gestionpeliculas.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.angel.gestionpeliculas.model.CountryProviders
 import com.angel.gestionpeliculas.model.PeliculaResponse
 import com.angel.gestionpeliculas.model.ResenaPublicaResponse
 import com.angel.gestionpeliculas.model.ResenaRequest
+import com.angel.gestionpeliculas.model.TMDBCollection
+import com.angel.gestionpeliculas.model.TMDBCredits
 import com.angel.gestionpeliculas.model.TMDBMovie
+import com.angel.gestionpeliculas.model.TMDBSimilarResponse
+import com.angel.gestionpeliculas.model.TMDBVideoResponse
 import com.angel.gestionpeliculas.repository.PeliculaRepository
+import com.angel.gestionpeliculas.repository.TMDBRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class BuscarViewModel : ViewModel() {
-    private val repository = PeliculaRepository()
-    private val _peliculaResponse = MutableLiveData<PeliculaResponse?>()
-    val peliculaResponse: LiveData<PeliculaResponse?> = _peliculaResponse
-    private val _resenas = MutableLiveData<List<ResenaPublicaResponse>>()
-    val resenas: LiveData<List<ResenaPublicaResponse>> = _resenas
-    private val _peliculasTMDB = MutableLiveData<List<TMDBMovie>>()
-    val peliculasTMDB: LiveData<List<TMDBMovie>> = _peliculasTMDB
-    private val _detalleTMDB = MutableLiveData<TMDBMovie?>()
-    val detalleTMDB: LiveData<TMDBMovie?> = _detalleTMDB
-    private val _watchProviders = MutableLiveData<CountryProviders?>()
-    val watchProviders: LiveData<CountryProviders?> = _watchProviders
-    private val _cargando = MutableLiveData<Boolean>()
-    val cargando = _cargando
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
-    private val _condicion = MutableLiveData<Boolean?>()
-    val condicion: LiveData<Boolean?> = _condicion
+    private val repository = TMDBRepository()
+    private val pRepository = PeliculaRepository()
+    private val _peliculaResponse = MutableStateFlow<PeliculaResponse?>(null)
+    val peliculaResponse: StateFlow<PeliculaResponse?> = _peliculaResponse
+    private val _resenas = MutableStateFlow<List<ResenaPublicaResponse>>(emptyList())
+    val resenas: StateFlow<List<ResenaPublicaResponse>> = _resenas
+    private val _peliculasTMDB = MutableStateFlow<List<TMDBMovie>>(emptyList())
+    val peliculasTMDB: StateFlow<List<TMDBMovie>> = _peliculasTMDB
+    private val _detalleTMDB = MutableStateFlow<TMDBMovie?>(null)
+    val detalleTMDB: StateFlow<TMDBMovie?> = _detalleTMDB
+    private val _watchProviders = MutableStateFlow<CountryProviders?>(null)
+    val watchProviders: StateFlow<CountryProviders?> = _watchProviders
+    private val _videos = MutableStateFlow<TMDBVideoResponse?>(null)
+    val videos: StateFlow<TMDBVideoResponse?> = _videos
+    private val _credits = MutableStateFlow<TMDBCredits?>(null)
+    val credits: StateFlow<TMDBCredits?> = _credits
+    private val _similar = MutableStateFlow<TMDBSimilarResponse?>(null)
+    val similar: StateFlow<TMDBSimilarResponse?> = _similar
+    private val _collection = MutableStateFlow<TMDBCollection?>(null)
+    val collection: StateFlow<TMDBCollection?> = _collection
+    private val _cargando = MutableStateFlow<Boolean>(false)
+    val cargando: StateFlow<Boolean> = _cargando
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error
+    private val _condicion = MutableStateFlow<Boolean?>(false)
+    val condicion: StateFlow<Boolean?> = _condicion
 
     @Suppress("TooGenericExceptionCaught")
     private fun ejecutar(
@@ -52,18 +64,25 @@ class BuscarViewModel : ViewModel() {
         }
     }
 
-    fun searchTMDB(query: String) {
+    @Suppress("TooGenericExceptionCaught")
+    private fun ejecutarTMDB(
+        mensajeError: String,
+        accion: suspend () -> Unit,
+    ) {
         viewModelScope.launch {
             try {
-                val resultado = repository.searchTMDB(query)
-                _peliculasTMDB.value = resultado
-            } catch (e: IOException) {
-                Log.d("ViewModel", "Error de red", e)
-                _error.value = "Error de conexión"
-            } catch (e: HttpException) {
-                Log.d("ViewModel", "Error HTTP ${e.code()}", e)
-                _error.value = "Error del servidor"
+                accion()
+            } catch (e: Exception) {
+                Log.d("ViewModel", mensajeError, e)
+                _error.value = mensajeError
             }
+        }
+    }
+
+    fun searchTMDB(query: String) {
+        ejecutarTMDB("Error al buscar pelicula en TMDB") {
+            val resultado = repository.searchTMDB(query)
+            _peliculasTMDB.value = resultado
         }
     }
 
@@ -71,18 +90,18 @@ class BuscarViewModel : ViewModel() {
         ejecutar("Error al buscar la pelicula en TMDB") {
             Log.d("TMDB", "Buscando película $tmdbId")
 
-            val detalle = repository.getMovieDetail(tmdbId, "es-ES")
+            val detalle = repository.getMovieDetail(tmdbId)
             Log.d("TMDB", "Detalle = $detalle")
 
             _detalleTMDB.value = detalle
 
-            val resultado = repository.buscarPorTmdb(tmdbId)
+            val resultado = pRepository.buscarPorTmdb(tmdbId)
             Log.d("TMDB", "Resultado BD = $resultado")
 
             _peliculaResponse.value = resultado
 
             if (resultado != null) {
-                _resenas.value = repository.resenasDePelicula(resultado.peliculaId)
+                _resenas.value = pRepository.resenasDePelicula(resultado.peliculaId)
             } else {
                 _resenas.value = emptyList()
             }
@@ -93,7 +112,7 @@ class BuscarViewModel : ViewModel() {
 
     fun addResenaRapido(r: ResenaRequest) {
         ejecutar("Error al añadir la pelicula") {
-            val resultado = repository.add(r)
+            val resultado = pRepository.add(r)
             _condicion.value = resultado
         }
     }
@@ -103,14 +122,49 @@ class BuscarViewModel : ViewModel() {
         r: ResenaRequest,
     ) {
         ejecutar("Error al actualizar la pelicula") {
-            val resultado = repository.update(id, r)
+            val resultado = pRepository.update(id, r)
             _condicion.value = resultado
         }
     }
 
     fun cargarResenasDePelicula(peliculaId: Long) {
         ejecutar("Error al cargar las reseñas") {
-            _resenas.value = repository.resenasDePelicula(peliculaId)
+            _resenas.value = pRepository.resenasDePelicula(peliculaId)
+        }
+    }
+
+    fun getAllExtras(peliculaId: Long) {
+        getVideos(peliculaId)
+        getCredits(peliculaId)
+        getSimilar(peliculaId)
+        getCollection(peliculaId)
+    }
+
+    private fun getVideos(peliculaId: Long) {
+        ejecutarTMDB("Error al buscar videos en TMDB") {
+            val resultado = repository.getVideos(peliculaId)
+            _videos.value = resultado
+        }
+    }
+
+    private fun getCredits(peliculaId: Long) {
+        ejecutarTMDB("Error al buscar los créditos en TMDB") {
+            val resultado = repository.getCredits(peliculaId)
+            _credits.value = resultado
+        }
+    }
+
+    private fun getSimilar(peliculaId: Long) {
+        ejecutarTMDB("Error al buscar peliculas similares en TMDB") {
+            val resultado = repository.getSimilar(peliculaId)
+            _similar.value = resultado
+        }
+    }
+
+    private fun getCollection(peliculaId: Long) {
+        ejecutarTMDB("Error al buscar la collecion en TMDB") {
+            val resultado = repository.getCollection(peliculaId)
+            _collection.value = resultado
         }
     }
 

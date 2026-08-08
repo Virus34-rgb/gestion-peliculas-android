@@ -46,6 +46,11 @@ fun InformacionPrincipalPelicula(param: InformaconPrincipalPeliculaData) {
                 ValoracionResumen("Mi colección", param.valoracion, param.numResenas, "reseñas")
             }
         }
-        DatoPelicula("Fecha de estreno", param.fecha)
+        param.fecha?.let { fecha ->
+            DatoPelicula("Fecha de estreno", fecha)
+        }
+        param.runtime?.let { runtime ->
+            DatoPelicula("Duracion", "$runtime min")
+        }
     }
 }

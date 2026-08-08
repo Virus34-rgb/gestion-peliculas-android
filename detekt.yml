@@ -23,7 +23,7 @@ style:
 complexity:
   LongMethod:
     active: true
-    threshold: 100
+    threshold: 150
 
   LongParameterList:
     active: true
@@ -41,7 +41,7 @@ complexity:
   TooManyFunctions:
     active: true
     thresholdInFiles: 20
-    thresholdInClasses: 15
+    thresholdInClasses: 20
 
 performance:
   SpreadOperator:

@@ -10,8 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -29,9 +29,9 @@ fun ResenaPeliculaScreen(
     peliculaId: Long,
 ) {
     val viewModel: BuscarViewModel = viewModel()
-    val resenas by viewModel.resenas.observeAsState(emptyList())
-    val cargando by viewModel.cargando.observeAsState()
-    val error by viewModel.error.observeAsState()
+    val resenas by viewModel.resenas.collectAsState()
+    val cargando by viewModel.cargando.collectAsState()
+    val error by viewModel.error.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.cargarResenasDePelicula(peliculaId)
     }

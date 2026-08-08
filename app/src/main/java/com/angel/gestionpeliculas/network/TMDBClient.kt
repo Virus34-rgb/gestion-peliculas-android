@@ -1,5 +1,6 @@
 package com.angel.gestionpeliculas.network
 
+import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -7,7 +8,10 @@ import kotlin.jvm.java
 
 object TMDBClient {
     private const val BASE_URL = "https://api.themoviedb.org/"
-    private val gson = GsonBuilder().create()
+    private val gson =
+        GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create()
 
     private val retrofit =
         Retrofit
